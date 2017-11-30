@@ -34,6 +34,26 @@ Problem	|Solution	|Name	|page
 ## 固定属性
 - 固定属性是我们使用的最常见的属性。 固定属性在类型的接口中声明。 它给出了属性的名称和返回类型。 图1显示了使用UML建模的属性，清单1显示了这些属性的查询方法如何在Java中显示。 我已经选择了这个例子来说明这个讨论同样适用于UML属性和UML关联。 它也适用于计算值（年龄）以及那些合理存储的数据（出生日期）。
 
-> 图1.使用固定属性建模的人员
-
 ![image](3_1.png)
+> 图1.使用固定属性建模的人员
+```java
+class Person {
+public Date getDateOfBirth(); 
+public int getAge();
+public Quantity getHeight(); 
+public Company getEmployer();
+public void setDateOfBirth (Date newDateOfBirth); 
+public void setEmployer (Company newEmployer);
+```
+> 列举,图1的`java`操作
+
+- 查询操作通常遵循一些命名约定。在smalltalk中，您总是在属性名称（dateOfBirth）之后命名查询。 C ++从来没有一个固定的约定，有些人只是在属性后面命名，而另一些人则使用“get”约定（getDateOfBirth）。 Java从没有特别的约定开始，但现在大多数人都采用get约定。就我个人而言，当您阅读代码时，我发现“get”令人恼火，所以我宁愿忽略它，但Java风格是使用get，所以现在就使用它。无论您使用的是存储值还是派生值，都应确保遵循相同的约定。人类的客户不应该知道或关心年龄是否存储或派生。
+
+- 修饰符操作的存在取决于您是否希望直接修改值。如果你这样做，那么你会根据一些命名方案，例如setDateOfBirth（Date）提供一个修饰符操作。对于返回值存在不同的约定。你可以返回属性的新值（Date），被修改的对象（Person），或者什么都没有（void）。我更愿意在修饰符上返回void，以帮助明确修饰符和查询之间的区别。
+
+```
+  固定属性
+ 你如何代表一个对象的事实？给它一个这个事实的特定属性。 这将转化为查询方法，并可能是一种编程语言的更新方法。 </br>
+  ✓清晰的界面
+ （只能在设计时添加属性
+```
