@@ -34,7 +34,7 @@ Problem	|Solution	|Name	|page
 ## <span id = "固定属性">固定属性</span>
 - 固定属性是我们使用的最常见的属性。 固定属性在类型的接口中声明。 它给出了属性的名称和返回类型。 图1显示了使用UML建模的属性，清单1显示了这些属性的查询方法如何在Java中显示。 我已经选择了这个例子来说明这个讨论同样适用于UML属性和UML关联。 它也适用于计算值（年龄）以及那些合理存储的数据（出生日期）。
 
-![image](3_1.png)
+![image](http://static.dmrs.me/java-design-patterns-doc-for-chinese/abstract-document/3_1.png)
 > 图1.使用固定属性建模的人员
 ```java
 class Person {
