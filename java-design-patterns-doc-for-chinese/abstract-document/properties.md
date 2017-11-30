@@ -133,3 +133,301 @@ public static ContactType get(String name);
 > 列举6,为定义的属性类型提供的服务
 
 - 特别是你现在可以设置一些检查，以防止由于某人要求的错误动态属性不存在，如清单7所示。我抛出一个未经检查的异常这里是因为我认为get（）的前提是客户端提供了一个合法的名字对于联系人类型。客户可以通过使用来始终履行这个责任hasInstanceNamed（），但大多数时候客户端软件会挂在联系人类型上对象，而不是字符串。
+
+```
+定义的动态属性
+你如何代表一个对象的事实？
+提供用某种类型的实例参数化的属性。 至声明一个属性创建一个新类型的实例
+```
+- 通常，联系人类型将保存在字典中，通常由字符串索引。这个字典可能是一个静态的联系人类型的字段，但是我更愿意把它作为注册服务器上的字段。删除联系人类型仍然具有尴尬的后果。在java中的动态属性仍然会出现在那些拥有它们的物体上，除非你写了一些复杂的东西清理代码。我通常会规定永远不要删除DefinedDynamic的键属性。 如果你想使用一个新的名字，你可以很容易地通过给它一个别名的联系人类型名字，但多次放入定义字典中。
+
+```java
+class ContactType {
+public static ContactType get(String name) {
+if (! hasInstanceNamed (name)) throw new IllegalArgumentException(“No
+such contact type);
+// return the contact type
+}
+// use with
+Address kentVactation =
+(Address) kent.getValueOf(ContactType.get(“VacationAddress”));
+```
+> 列举7, 检查使用合法合同类型
+
+- 在这一点上，你可能想知道这与概念建模有什么关系，毕竟我写了很多代码并讨论设计的权衡。这是一个重要的概念上的问题，因为你所做的概念选择会影响执行选项你有。如果你选择在你的概念模型中使用灵活的动态属性，你是使你很难在你的定义中使用定义的动态属性或固定属性实现。你做概念模型的原因之一是探索什么是固定的用户的概念有什么变化。如果全面的灵活性是我唯一的目标，那么我会总是使用图4.通过这个，我可以模拟世界上的任何情况。但是这个模型不是很有用。它的无用性来自事实，它不表示什么是固定的。什么时候你正在做一个概念模型，你需要知道你的选择如何影响事物实施-否则你放弃你作为建模者的责任。我经常发现人们发现动态属性，然后想要在任何地方使用它们。灵活性如此之大，他们获得了所有的可扩展性。是的，有时候你
+需要动态属性。但永远不会忘记有一个价格。只有当你真的使用它们需要他们。毕竟，如果必须，以后很容易添加它们。
+
+![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/8_1.png)
+> 图4.一个可以无用建模任何域的模型
+
+- 定义的动态属性允许您更多地指出您的属性有。这些属性仍然是无类型的。你不能执行假期的价值图3中的地址是一个地址。 你可以通过使用类型动态来做些什么属性。
+
+![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/9_1.png)
+> 图5.为使用限定关联的类型化动态属性建模
+
+-类型化动态属性将类型信息添加到定义的动态属性（图6和6）图5）。这里的联系人类型的实例不只是指出该人是什么合适的人有，他们也表示每个财产的类型。 类型约束的价值，沿线清单9。
+
+```java
+class Person {
+public Object getValueOf(ContactType key);
+public void setValueOf(ContactType key, Object value);
+class ContactType {
+public Class getValueType();
+public ContactType (String name, Class valueType);
+```
+> 列举8, 键入动态属性的操作
+
+```java
+class Person {
+public void setValueOf(ContactType key, Object value) {
+if (! key.getValueType().isInstance(value))
+throw IllegalArgumentException (“Incorrect type for property”);
+// set the value
+```
+> 列举9, 做类型检查
+
+- 这样做类型检查可以帮助避免错误，但是仍然不够明确属性。检查是在运行时间，而不是在设计时间，因此没有那么有效。还是比没有检查好，尤其是如果你习惯于强类型的话环境。
+
+```
+类型动态属性
+你如何代表一个对象的事实？
+提供使用某种类型的实例进行参数化的属性。 声明一个属性创建一个新类型的实例并指定值的类型属性。
+```
+
+- 当我们深入研究动态属性时，我们发现了更加丰富的反射的例子当我们获得能够描述的运行时对象时出现的架构模式他们自己。 [POSA]比我打算在这里更详细地讨论反思。
+
+- 动态属性提供反射功能，即使在那些不支持的语言中也是如此反思自己。即使用一种语言，也反映了一些思考
+的动态属性更专注 - 所以你可以提供一个更易于使用的界面。
+
+- 使用所有这些合格的协会可能会很难遵循。 另一种方式提供类型化的动态属性是使用单独的属性模式。 的本质单独的属性模式是它使属性成为它自己的一个对象（图6和6）清单10）。你可以得到一个人的财产，然后与每个财产得到价值和类型信息。
+
+```
+分开的属性
+你如何代表一个事物的事实，并允许事实记录这个事实
+为每个属性创建一个单独的对象。 有关该财产的事实可以然后被做成那个对象的属性。
+```
+
+- 独立的属性和合格的关联是两种可供选择的选择动态属性。到目前为止，我已经描述了灵活和定义的动态属性
+合格的协会，因为合格的协会提供了一个更容易使用的界面。如果您愿意，您可以使用灵活和定义的具有单独属性的动态属性，虽然我不打算在这里进入。当我们谈到类型动态的复杂性时属性和分开的财产风格变得更有优势。
+
+![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/10_1.png)
+> 图6.为分类的动态属性建模，使用单独的属性
+
+```java
+class Person {
+public Enumeration getProperties();
+class ContactProperty {
+public Object getValue();
+public Class getType();
+public ContactType getIndex();
+```
+> 列举10, 使用单独属性的类型化动态属性的操作
+
+- 单独的属性和有限的关联不是相互排斥的。你可以很容易同时提供两个接口。这样你就得到了两者的优点。当然这使得界面更加复杂，所以首先要考虑人的客户需要什么。给他们他们需要的接口，不要让它过于复杂。但如果他们需要两个合格的协会和单独的财产，那么这是一个合理的选择。我会通常总是使用有价值的关联来获得价值，但它可能没有多少意义方式。
+
+- 您也可以在这里考虑接口/实现的差异。在本文中，我想专注于概念-映射到软件界面而不是其界面实现。但值得一提的是，你可以提供一个合格的协会接口，同时在实现中使用单独的对象。你只使用单独的如果一个人的客户端可以获得一个联系人属性对象，则在界面中的属性。通常是这样有助于隐藏单独的属性来简化客户端的接口。
+
+- 独立属性的一大优势是它可以让你放置信息关于财产的财产。这些信息可能包括谁决定的财产，何时确定，等等。 [Fowler AP§3.5]中的观察模式在一定的深度上建立在这个主题上。我在这里描述的很多东西如果你需要单独的属性，观察是值得考虑的。 （我看到了观察模式作为独立属性的使用。）
+
+- 您可能想知道单独的属性（一个模式）与合格的对比关联（一个UML建模结构）。你也可以把有资格的协会想象成一个模式，关联模式。事实上，我在[FowlerAP§15.2]中做了这个。我找到了有助于将建模作为模式来思考，因为这有助于我考虑权衡在使用它们。当你比较它们的东西时，这是特别有用的更清晰的模式，如单独的财产。当然，以模式开始的事情可以被转换成建模结构，特别是如果你使用UML原型。历史悠久映射模式[FowlerAP§15.3]就是一个很好的例子。我代表那个使用“历史”刻板印象。这是一个模式或建模？也许这是一个地板蜡和一个
+沙漠也打顶了。
+
+---
+## 具有多值关联的动态属性
+
+- 我上面的例子集中在每个密钥都有一个单一值的情况动态属性。但是你也可以有一些情况，其中有多个项目
+动态属性。与人，你可能会考虑一个多值的朋友财产。有两种方法可以解决这个问题，一个简单而不令人满意，另一个就是这样满足，但（太）复杂。
+
+
+- 简单的方法就是说动态属性的值可以是一个集合。然后我们可以像使用相同接口的其他对象一样操作它（清单11）。这是好，简单，因为我们不必对基本的动态属性模式做任何事情。（这里的例子是一个类型化的动态属性，但它可以和所有的一起工作）但是，这并不令人满意，因为这不是我们想要处理多重价值的方式属性。如果朋友是一个固定的财产，我们会想沿着一个界面清单12.我不喜欢在这种情况下暴露vector。通过这样做，人类失去了当我们添加或移除元素时能够反应。这也消除了我们改变的能力我们正在使用的收集类型。
+
+```java
+Person aPerson = new Person();
+ContactType friends = new ContactType(“Friends”, Class.forName(“Vector”));
+Person martin = new Person(“Martin”);
+martin.setValueOf(“Friends”, new Vector());
+Person kent = new Person(“Kent”);
+martin.getValueOf(“Friends”).addElement(“Kent”);
+Enumeration friends = martin.getValueOf(“Friends”).elements();
+```
+> 列举11, 在类型化动态属性中使用集合值
+```java
+class Person {
+public Enumeration getFriends();
+public void addFriend(Person arg);
+public void removeFriend(Person arg);
+```
+> 列举12, 一个固定的多值财产的运作
+
+- 那么当我们有动态属性的时候，我们可以按照清单12的方式获得一个接口吗？那么，如果我们努力工作，就可以如图7所示。但这是一个复杂的模型。同一些聪明的编码，我们可以隐藏接口之后的复杂性（清单13和13）清单14），并且使用起来相当方便（清单15）。但客户仍然需要知道哪些属性是单值的，哪些属性是多值的，所有的检查正确的使用只能在运行时发生。 所有这些复杂性是痛苦的 - 更加痛苦比使用固定的属性。我会非常不愿走这么远。
+
+![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/12_1.png)
+> 图7.满足对多值动态属性的过度支持
+
+```
+class Person
+public Object getValueOf(ContactType key);
+public Enumeration getValuesOf(ContactType key);
+public void setValueOf(ContactType key, Object newValue);
+public void addValueTo(ContactType key, Object newValue);
+public void removeValueFrom(ContactType key, Object newValue);
+class ContactType
+public Class getValueType();
+public boolean isMultiValued();
+public boolean isSingleValued();
+public ContactType(String name, Class valueType, boolean isMultiValued);
+```
+> 列举13, 图7的操作
+
+```java
+class Person
+public Object getValueOf(ContactType key) {
+if (key.isMultiValued())
+throw IllegalArgumentException(“should use getValuesOf()”)
+//return the value
+}
+public void addValueTo(ContactType key, Object newValue) {
+if (key.isSingleValued())
+throw IllegalArgumentException(“should use setValueOf”);
+if (! key.getValueType().isInstance(newValue))
+throw IllegalArgumentException (“Incorrect type for property”);
+//add the value to the collection
+```
+> 列举14, 检查清单13的操作的使用情况
+
+```java
+fax = new ContactType(“fax”, Class.forName(“PhoneNumber”), false);
+Person martin = new Person(“martin”);
+martin.setValueOf(“fax”, new PhoneNumber(“123 1234”);
+martinFax = martin.getValueOf(“fax”);
+friends = new ContactType (“friends”, Class.forName(“Person”), true);
+martin.addValueTo(“friends”, new Person(“Kent”));
+```
+> 列举15, 使用清单13的操作
+
+- 出现这种复杂性是因为我们既有多值也有单值属性。处理这些问题有一个固有的不同的界面，因此复杂性。 的当然，我们可以得到只有多值属性的情况。 这是一个常见的模式类型化关系模式（图8）。 这里一个人可能有不同的数目与一些不同公司的雇佣关系（甚至与几家公司的雇佣关系）同一家公司）。
+
+![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/13_1.png)
+> 图8.类型关系的一个例子
+
+```java
+class Employment {
+public Employment (Person person, Company company, Employment Type type);
+public void terminate()
+…}
+class Person {
+public Enumeration getEmployments();
+public void addEmployment (Company company, EmploymentType type);
+```
+> 列举15, 图8的`Java`接口
+
+- 正如我们想到的那样，它很快就会发生，这与使用a非常类似定义的动态属性是多值的，但使用分离属性来表示比合格的协会。 （或者这句话太过分了吗？）确实如此9显示了在这种情况下如何使用Defined Dynamic Property接口。 这个观点事情是真的，所以一个类型化的关系不会添加任何新的模式语言。但是类型化的关系在建模界是一个非常普遍的模式，而且很多可能没有意识到它与动态属性模式的联系。
+
+```
+类型关系
+你如何表示两个对象之间的关系？
+（你如何表示多值动态属性？）
+为两个对象之间的每个链接创建一个关系对象。 给关系对象一个类型对象来表示关系的含义。
+（类型对象是多值属性的名称。）
+```
+
+- 类型化关系的优势在于它能够与双向关系良好地协作它提供了一个简单的点来添加关系的属性。 （后者当然是一个单独属性的功能）。您可以为此模式添加复杂的知识级别，沿着与键入的动态属性大致相同的路线。不过你应该考虑一下界面影响。类型化的关系迫使用户意识到雇佣对象，因为确实使用单独的属性。事实上，人们倾向于将财产对象看作是一个完全成熟的对象，而不是一个人（或公司）的一些财产。但合格的关联通常可以为许多目的提供更简单的接口。所以每当你看，或者你正在考虑使用，一种类型的关系;你也应该考虑一下合格的协会形式。您可以在任一方向或两个方向使用它，也可以使用它除了类型化的关系，或者除此之外。
+- 但是这两种模式并不完全相同。如果你使用图9，你正在指出一个雇主只能是某一特定工种的雇主。图8没有这样的尽管大多数建模者会暗示这样的约束，除非工作有附加属性。当然，就业往往是有的附加属性。一个常见的例子是日期范围（如问责制[Fowler，AP2.4节。
+
+![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/14_1.png)
+> 图9.使用与图8相同情况的合格关联
+
+```java
+public Person
+public void addEmployer (Company company, EmploymentType type);
+public Enumeration getEmployersOfType (EmploymentType type);
+```
+> 列举17, 图9的接口
+
+![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/15_1.png)
+> 图10.键入的关系，显示通常假定的约束
+
+---
+## 不同种类的人
+- 到目前为止，我们假设我们只有一种人，并且我们定义了一个属性人是所有人的有效财产。但是，你确实有你的情况不同类型，不同类型的属性。经理可能需要一个财产部门管理，执行可能需要一个财产的行政洗手间的关键号码（在一个不是90年代的公司）。
+
+- 别担心，我听到“使用继承愚蠢”的呼声。事实上，这是其中的一种情况这通常用于子类型。其实它比这个更涉及，特别是当你开始思考一个人可能扮演的角色。我已经写了一整篇文章模仿角色[福勒角色]的主题。角色模式考虑我们的情况对操作的变化和固定属性的变化感兴趣。但在这种情况下，我要探索不同类型的对象与动态属性的概念的重叠。这种重叠产生了动态属性知识水平模式（一个名字越来越少我的口味太大）。
+
+- 为了使用这个模式，我们给Person一个Person类型的类型对象。那我们可以这样说人员类型与联系人类型的关联指示哪些人员可用的属性谁有那个人类型如果我们试图使用，或要求，在一个人的财产人类型可以用来检查使用是否正确。
+
+![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/16_1.png)
+> 图11.动态财产知识水平
+
+```java
+class Person {
+public Object getValueOf(ContactProperty key);
+public boolean hasProperty(ContactProperty key);
+public void setValueOf(ContactProperty key, Object newValue);
+class PersonType {
+public boolean hasProperty(ContactProperty key);
+public Enumeration getProperties();
+```
+> 列举18, 图11的操作
+```java
+class Person {
+public Object getValueOf (ContactProperty key) {
+if (!hasProperty(key))
+throw IllegalArgumentException(“Innapropriate key”);
+//return the value
+```
+> 列举19, 检查具有动态属性知识级别的适当的密钥
+
+- 当我们开始使用这样的知识水平时，单独的财产变得越来越多重要。在这种情况下，我们很快就会开始停止将其视为一种财产，而不是某种客体在自己的权利。什么是财产和什么不是非常模糊的界限，这实际上取决于你对事物的看法。
+
+```
+动态财产知识水平
+你如何执行某些类型的对象具有某些特性使用动态属性？
+创建一个知识级别来包含什么类型的对象使用的规则哪些类型的属性
+```
+
+---
+
+## 动态属性的几个小结
+
+- 各种各样的动态属性构成了本文的大部分内容。但我必须重申那动态属性是我想要尽可能避免的。动态特性带来了沉重的负担：接口不够清晰，使用困难操作而不是存储的数据。只是有时候你别无选择，只能用他们在这种情况下，这个文件应该有用的给你一些替代品和之间的权衡。
+
+- 动态属性出现在改变界面有困难的地方。人谁与分布式对象系统一样工作，至少在原则上，因为它允许他们可以在不损害客户的情况下改变界面-而在分布式系统中则可能很难找到你的客户。但是你仍然应该警惕这样做。任何当你为你有效改变的动态属性添加一个新的密钥界面。所有的动态属性都在替换运行时检查的编译时间检查。你仍然有同样的问题保持你的客户最新。
+
+- 动态属性的另一个常见用途是在数据库中。这不仅仅是因为这个接口问题，而且由于数据迁移的问题（如果不是主要的话）。改变一个数据库模式不仅会对使用该模式的程序造成潜在的变化，可能会迫使你做一个复杂的数据转换练习。动态属性也是允许的你可以在不改变数据库模式的情况下改变一些东西，从而不需要做任何事情
+数据转换。在大型数据库中，这可能是一个引人注目的优势。
+
+---
+
+## 你不知道的属性
+
+- 我想在本文中添加一个最后一个重要的属性。情况就是如此具有财产的物体没有意识到。当财产被隐含时，会发生这种情况另一个对象和它与你有关的方式。
+
+- 考虑一个管理数据库连接的对象。它创建了一堆数据库连接并在请求时将它们交给其他对象。当一个客户端完成这个连接可以将它返回给管理员，以供其他人使用。你可以做这通过向连接添加一个isBusy属性。图12显示了使用一个替代方案外在财产。连接是空闲的还是繁忙的，取决于收集的内容它所在的连接管理器。如果你有一个连接，你不能问它是否是自由或忙碌，相反，你将不得不问连接管理器是否一个特定的连接空闲或忙碌。你可以这样说，因为组合关联是一种方式。连接不知道连接管理器。在某种意义上说是忙/闲状态根本不是一个连接的属性。但至少从某种意义上说，这就是我提到它的原因。
+
+![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/17_1.png)
+> 图12.使用外部收集属性
+
+- 在纯粹的概念模型意义上，这种模式没有多大意义。 但是这里有实际的实施原因，你可能想要使用它。 如果你想对此做所有更改财产要经过一个连接管理者，那么这个方法就说明了这一点。在特别是当你想让连接管理员免费给你时，这是一种自然的风格连接，你不关心哪一个。
+
+- 使用外部属性的另一个原因是如果连接类是由某人提供的否则你不能改变它的接口。您可以添加新的属性而不更改连接类。
+
+```
+外在属性
+你如何给对象一个属性而不改变它的接口？
+让另一个对象负责知道这个属性。
+```
+- 外在性质的一个大问题是它会导致一种尴尬和不自然的现象接口。通常如果你想知道什么，你只需找到合适的对象并询问它。 在这里你需要找到持有外部集合的对象，并询问它适当的对象。在某些情况下，比如这个，似乎是合理的。 但大部分我宁愿让对象了解自己的属性（在这种情况下，我打电话他们的内在属性）。
+
+---
+
+## 最后的想法
+
+- 当我完成本文时，我觉得需要再次敦促你不要使用我一直在写的东西这里除非你真的需要它。固定属性的好处是伟大的。 如果你需要别的，那么我希望这篇论文给你一些想法和一些指导。但是固定的物业永远是你的第一选择。
+
+---
+
+## 参考
+
+- [Fowler, AP] Fowler, Martin. Analysis Patterns: Reusable Object Models, Addison-1997
+- [Fowler, roles] Fowler, Martin. Dealing with Roles,http://www.awl.com/cseng/titles/89542-0/awweb.htm
+- [POSA] Buschman et al, Pattern Oriented Software Architecture, Wiley 1997
