@@ -1,4 +1,4 @@
-# 处理属性
+# 属性的行为(未校对)
 ---
 *Martin Fowler*   <P>
 fowler@acm.org
