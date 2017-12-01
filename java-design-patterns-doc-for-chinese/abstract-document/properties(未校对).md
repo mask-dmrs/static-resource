@@ -1,4 +1,4 @@
-# 属性的行为(未校对)
+# 属性的行为(未校对) :construction:
 ---
 *Martin Fowler*   <P>
 fowler@acm.org
