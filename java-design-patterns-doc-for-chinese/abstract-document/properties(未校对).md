@@ -1,4 +1,4 @@
-# 属性的行为(未校对)
+# 属性的行为(校对中)
 ---
 *Martin Fowler*   <P>
 fowler@acm.org
@@ -53,10 +53,11 @@ class Person {
 - [<span id="19">`修饰符`操作的存在取决于您是否希望直接修改值。如果你这样做，那么你会根据一些命名方案，例如`setDateOfBirth`（`Date`）提供一个修饰符操作。对于`返回值`存在不同的约定。你可以返回属性的新值（`Date`），被修改的对象（`Person`），或者什么都没有（`void`）。我更愿意在修饰符上返回`void`，以帮助明确修饰符和查询之间的区别。](#19 "The presence of modifier operations depends on whether you want the values to be directly modified. If you do then you will provide a modifier operation according to some naming scheme, eg setDateOfBirth(Date). Different conventions exist as to the return value. You can return the new value of the property (Date), the object being modified (Person), or nothing (void). I prefer to return void on modifiers, to help make clear the difference between a modifier and a query.")
 
 ---
- > <h3 align = "center">固定属性</h3>
- > [<span id="20">你如何代表一个对象的事实？</span>](#20 "How do you represent a fact about an object?")</br>  [<span id="20">给它一个这个事实的特定属性。这将转化为查询方法，并可能是一种编程语言的更新方法。</span>](#20 "Give it a specific attribute for that fact. This will translate to a query method and probably an update method in a programming language.")</br>
- > - [<span id="20">接口很清晰明确</span>](#20 "Clear and explicit interface")</br>
- > - [<span id="20"><font color="red">只能在设计时添加属性</font></span>](#20 "Can only add properties at design time")</br>
+  <h3 align = "center">固定属性</h3>
+  - [<span id="20">你如何代表一个对象的事实？</span>](#20 "How do you represent a fact about an object?")
+  -  [<span id="20">给它一个这个事实的特定属性。这将转化为查询方法，并可能是一种编程语言的更新方法。</span>](#20 "Give it a specific attribute for that fact. This will translate to a query method and probably an update method in a programming language.")</br>
+    - [<span id="20">接口很清晰明确</span>](#20 "Clear and explicit interface")</br>
+    - [<span id="20"><font color="red">只能在设计时添加属性</font></span>](#20 "Can only add properties at design time")</br>
 ---
   
 - [<span id="21">您可能希望为属性的`构造函数`提供参数。通常，您要在`构造函数`中设置足够的属性，以便构建格式良好的类。</span>](#21 "You may wish to provide arguments to the constructor for properties. Typically you want to set enough properties in the constructor so that you construct a well-formed class.")
@@ -69,11 +70,11 @@ class Person {
 - [<span id="24">`固定属性`的关键在于您在设计时修复了这些属性，并且所有实例在运行时都必须遵循该决定。 对于一些问题，这是一个尴尬的限制。 想象一下，我们正在建立一个复杂的联络系统。 有一些东西是固定的：家庭住址，家庭和工作电话，电子邮件。 但他们是各种各样的小变化。 对于需要记录父母地址的人，另一个人有白天工作和晚上工作号码。 事先很难预测所有这些事情，每次更改系统时都必须经过编译，测试和分发。 要处理这个问题，你需要使用动态属性。</span>](#24 "The key thing about fixed properties is that you fix them at design time, and all instances at run time must follow that decision. For some problems this is an awkward restriction. Imagine we are building a sophisticated contact system. There are some things that are fixed: home address, home and work phone, email. But they’re all sorts of little variations. For someone you need to record their parent’s address, another has a day work and evening work numbers.It’s hard to predict all these things in advance, and each time you change the system you have to go through compiling, testing, and distribution. To deal with this you need to use dynamic properties.")
 
 ---
- > <h3 align = "center">动态属性</h3>
- >  [<span id="25">你如何代表一个对象的事实？</span>](#25 "How do you represent a fact about an object?")</br>
- >  [<span id="25">提供可参数化的属性，可以根据参数表示不同的属性</span>](#25 "Provide a parameterizable attribute which can represent different properties depending on the parameter") </br>
- >  - [<span id="25"> 可以在运行时添加属性</span>](#25 "Can add properties at run time")
- >  - [<span id="25"><font color="red">接口不清晰</font></span>](#25 "Unclear interface")
+  <h3 align = "center">动态属性</h3>
+  - [<span id="25">你如何代表一个对象的事实？</span>](#25 "How do you represent a fact about an object?")</br>
+  - [<span id="25">提供可参数化的属性，可以根据参数表示不同的属性</span>](#25 "Provide a parameterizable attribute which can represent different properties depending on the parameter") </br>
+   - [<span id="25"> 可以在运行时添加属性</span>](#25 "Can add properties at run time")
+   - [<span id="25"><font color="red">接口不清晰</font></span>](#25 "Unclear interface")
 ---
   
 - [<span id="26">`动态属性`有多种变化，每种变化都会在`灵活性`和`安全性`之间做出不同的选择。 最简单的方法是`灵活动态属性`。 这种模式的本质是为键值为简单值的人（通常是字符串）添加一个合格的关联（参见图2和示例2）。 如果您想为某人Kent添加休假地址，则只需使用清单3中的代码即可。您不需要重新编译人员类。 你甚至可以建立一个图形用户界面（`GUI`）或者文件读取器来添加属性，而不用重新编译客户端。</span>](#26 "There are several variations on dynamic properties, each of which make different trade-offs between flexibility and safety. The simplest approach is Flexible Dynamic Properties. The essence of this pattern is that you add a qualified association to the person whose key is a simple value, usually a string (see Figure 2 and Listing 2). If you want to add a vacation address to a person Kent, you just use the code in Listing 3. You don’t need to recompile the person class. You could even build a GUI or a file reader that would add properties without recompiling the client either.")
@@ -94,10 +95,9 @@ Address kentVactation = (Address) kent.getValueOf(“VacationAddress”)
 - [<span id="27">这样说，你可能想知道为什么有人会使用固定的属性，因为动态的像这样的属性给了你更多的灵活性。当然有一个成本，它在于软件各部分之间依赖关系的清晰度降低。这一切都非常好给一个人增加一个度假地址属性，但是你怎么知道把它重新取回呢？有了固定的属性，你可以看看人的界面，看看属性。该编译器可以检查不要求对象做不理解的事情。 用一个动态属性，你不能做任何设计时检查。此外的界面人很难看。不只是你看`Person`的声明接口 -你也必须找到不会出现在类接口中的动态属性。你必须找到那些设置属性的代码部分（通常不会在`Person`类中）提现出来。</span>](# "Said like that, you might wonder why anyone would ever use fixed properties, since dynamic properties such as this give you so much more flexibility. Of course there is a cost, and it lies in the reduction of the clarity of the dependencies between parts of the software. It is all very well adding a vacation address property to a person, but how do you know to get it back again? With fixed properties you can just look at the interface of person and see the properties. The compiler can check that don’t ask an object to do something it doesn’t understand. With a dynamic property you cannot do any design-time checking. Furthermore the interface of person is harder to see. Not just do you look at Person’s declared interface – you also have to find the dynamic properties, which will not be present in the class interface. You have to find that part of the code that sets the property (which usually will not be in the Person class at all) and dig it out.")
 
 ---
- > <h3 align = "center">灵活动态属性</h3>
- > 	[<span id="28">你如何代表一个对象的事实？</span>](#28 "How do you represent a fact about an object?")</br>
- >  [<span id="28">提供一个用字符串参数化的属性。只声明一个属性使用字符串。</span>](#28 "Provide an attribute parameterized with a string. To declare a property just use the string.") </br>
- > 
+ <h3 align = "center">灵活动态属性</h3>
+  - [<span id="28">你如何代表一个对象的事实？</span>](#28 "How do you represent a fact about an object?")</br>
+  - [<span id="28">提供一个用字符串参数化的属性。只声明一个属性使用字符串。</span>](#28 "Provide an attribute parameterized with a string. To declare a property just use the string.") </br> 
 ---
 
 - [<span id="30">不仅是属性很难找到，它的依赖也是一个噩梦。随着固定属性的客户端代码有一个依赖于人类 - 一个依赖是难以跟踪。如果你改变属性的名字，编译器会让你知道，并告诉你需要改变什么代码才能解决问题。但灵活的动态属性创建一个依赖于任意一段代码。它可能是属于一个类的代码甚至不能被客户端看到。如果有人更改密钥字符串会发生什么？如果有人改变他们把键入字符串的对象的类型会发生？不仅仅是编译器没法帮助你，你甚至不知道从哪里开始查找变化。</span>](#30 "Not just is the property hard to find, it also creates a nightmare dependency. With fixed properties the client code has a dependency to the person class – a dependency that is easy to keep track of. If you change the name of the property the compiler will let you know, and tell you what code you need to change to fix things. But the Flexible Dynamic Property creates a dependency into some arbitrary piece of code. It could be code that belongs to a class that is not even visible to the client. What happens if someone changes the key string? What happens if someone changes the type of object they put into the key string? Not just can the compiler do nothing to help you, you don’t even know where to start looking for potential changes.")
