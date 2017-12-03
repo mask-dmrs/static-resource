@@ -273,41 +273,44 @@ class Person {
 ```
 #### 列举12, 一个固定的多值属性的运作
 
-- 那么当我们有动态属性的时候，我们可以按照清单12的方式获得一个接口吗？那么，如果我们努力工作，就可以如图7所示。但这是一个复杂的模型。同一些聪明的编码，我们可以隐藏接口之后的复杂性（清单13和13）清单14），并且使用起来相当方便（清单15）。但客户仍然需要知道哪些属性是单值的，哪些属性是多值的，所有的检查正确的使用只能在运行时发生。 所有这些复杂性是痛苦的 - 更加痛苦比使用固定的属性。我会非常不愿走这么远。
+- [<span id="60">那么当我们有`动态属性`的时候，我们可以按照清单12的方式获得一个接口吗？ 那么，如果我们努力工作，就可以如图7所示。但这是一个复杂的模型。 通过一些巧妙的编码，我们可以隐藏接口（清单13和清单14）背后的大部分复杂性，并且使用起来相当方便（清单15）。但客户端仍然需要知道哪些属性是单值的，哪些属性是多值的，并且只有在运行时才能检查正确的使用情况。所有这些复杂性都是痛苦的-比使用`固定属性`更痛苦。我会非常不愿走这么远。</span>](#60 "So can we get an interface along the lines of Listing 12, when we have dynamic properties? Well if we try hard enough we can, as you can see in Figure 7. But it is a complex model. With some clever coding we can hide much of that complexity behind the interface (Listing 13 and Listing 14) and make it reasonably convenient to use (Listing 15). But the client still needs to know which properties are single valued and which are multi-valued and all the checking for the right usage can only occur at run time. All this complexity is painful – a lot more painful than using fixed properties. I would be very reluctant to go this far.")
 
 ![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/12_1.png)
-> 图7.满足对多值动态属性的过度支持
+
+#### 图7.满足对多值动态属性的过度支持
 
 ```
 class Person
-public Object getValueOf(ContactType key);
-public Enumeration getValuesOf(ContactType key);
-public void setValueOf(ContactType key, Object newValue);
-public void addValueTo(ContactType key, Object newValue);
-public void removeValueFrom(ContactType key, Object newValue);
+    public Object getValueOf(ContactType key);
+    public Enumeration getValuesOf(ContactType key);
+    public void setValueOf(ContactType key, Object newValue);
+    public void addValueTo(ContactType key, Object newValue);
+    public void removeValueFrom(ContactType key, Object newValue);
+    
 class ContactType
-public Class getValueType();
-public boolean isMultiValued();
-public boolean isSingleValued();
-public ContactType(String name, Class valueType, boolean isMultiValued);
+    public Class getValueType();
+    public boolean isMultiValued();
+    public boolean isSingleValued();
+    public ContactType(String name, Class valueType, boolean isMultiValued);
 ```
-> 列举13, 图7的操作
+#### 列举13, 图7的操作
 
 ```java
 class Person
-public Object getValueOf(ContactType key) {
-if (key.isMultiValued())
-throw IllegalArgumentException(“should use getValuesOf()”)
-//return the value
-}
-public void addValueTo(ContactType key, Object newValue) {
-if (key.isSingleValued())
-throw IllegalArgumentException(“should use setValueOf”);
-if (! key.getValueType().isInstance(newValue))
-throw IllegalArgumentException (“Incorrect type for property”);
-//add the value to the collection
+    public Object getValueOf(ContactType key) {
+        if (key.isMultiValued())
+            throw IllegalArgumentException(“should use getValuesOf()”)
+        //return the value
+    }
+    
+    public void addValueTo(ContactType key, Object newValue) {
+        if (key.isSingleValued())
+            throw IllegalArgumentException(“should use setValueOf”);
+        if (! key.getValueType().isInstance(newValue))
+            throw IllegalArgumentException (“Incorrect type for property”);
+        //add the value to the collection
 ```
-> 列举14, 检查清单13的操作的使用情况
+#### 列举14, 检查清单13的操作的使用情况
 
 ```java
 fax = new ContactType(“fax”, Class.forName(“PhoneNumber”), false);
@@ -317,126 +320,126 @@ martinFax = martin.getValueOf(“fax”);
 friends = new ContactType (“friends”, Class.forName(“Person”), true);
 martin.addValueTo(“friends”, new Person(“Kent”));
 ```
-> 列举15, 使用清单13的操作
+#### 列举15, 使用清单13的操作
 
-- 出现这种复杂性是因为我们既有多值也有单值属性。处理这些问题有一个固有的不同的界面，因此复杂性。 的当然，我们可以得到只有多值属性的情况。 这是一个常见的模式类型化关系模式（图8）。 这里一个人可能有不同的数目与一些不同公司的雇佣关系（甚至与几家公司的雇佣关系）同一家公司）。
+- [<span id="61">这种复杂性似乎是因为我们既有多值也有单值的`属性`。处理这些复杂性有一个内在的不同的接口，因此复杂性也是如此。当然，我们可以得到只有多值属性的情况。一个常见的模式是类型关系模式（图8）。在这里，一个人可能与许多不同公司有不同的雇佣关系（甚至与同一家公司有多个）。</span>](#61 "This complexity appears because we have both multi valued and single-valued properties.There is an inherently different interface to dealing with these, hence the complexity. Of course we can get situations with only multi-valued properties. A common pattern for this is the Typed Relation ship pattern \(Figure 8\). Here a person may have number of different employment relationships with a number of different companies \(or even several with the same company\).")
 
 ![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/13_1.png)
-> 图8.类型关系的一个例子
+#### 图8.类型关系的一个例子
 
 ```java
 class Employment {
-public Employment (Person person, Company company, Employment Type type);
-public void terminate()
-…}
+    public Employment (Person person, Company company, Employment Type type);
+    public void terminate()
+    …
+}
 class Person {
-public Enumeration getEmployments();
-public void addEmployment (Company company, EmploymentType type);
+    public Enumeration getEmployments();
+    public void addEmployment (Company company, EmploymentType type);
 ```
-> 列举15, 图8的`Java`接口
+#### 列举16, 图8的`Java`接口
 
-- 正如我们想到的那样，它很快就会发生，这与使用a非常类似定义的动态属性是多值的，但使用分离属性来表示比合格的协会。 （或者这句话太过分了吗？）确实如此9显示了在这种情况下如何使用Defined Dynamic Property接口。 这个观点事情是真的，所以一个类型化的关系不会添加任何新的模式语言。但是类型化的关系在建模界是一个非常普遍的模式，而且很多可能没有意识到它与动态属性模式的联系。
+- [<span id="62">正如我们想到的那样，很快就会发现，这与使用多值的`定义动态属性`非常类似，但是使用`分离属性`而不是合适的关联来表示。（或者说这句话太过分了？）实际上，图9显示了在这种情况下如何使用`定义动态属性`接口。这种事物的观点是真实的，所以一个类型化的关系不会添加任何新的模式语言。 但是类型化关系在建模圈子中是一种非常普遍的模式，很多人可能没有意识到它与`动态属性`模式的联系。</span>](#62 "As we think of this, it should soon occur to you that this is really very similar as using a Defined Dynamic Property that is multi-valued, but expressed using a Separate Property rather than a Qualified Association. (Or is that sentence just too much of a mouthful?) Indeed Figure 9 shows how you can use a Defined Dynamic Property interface in this situation. This view of things is true, and so a typed relationship doesn’t add anything that new to this pattern language. But typed relationship is a very common pattern in modeling circles, and many may not realize its connection with the dynamic properties patterns.")
 
-```
-类型关系
-你如何表示两个对象之间的关系？
-（你如何表示多值动态属性？）
-为两个对象之间的每个链接创建一个关系对象。 给关系对象一个类型对象来表示关系的含义。
-（类型对象是多值属性的名称。）
-```
+---
+<h3 align = "center">类型关系</h3>
+- [<span id="63">你如何表示两个对象之间的关系？（你如何表示多值动态属性？）</span>](#63 "How do you represent a relationship between two objects?(How do you represent multi-valued dynamic properties?)")
+- [<span id="63">为两个对象之间的每个链接创建一个关系对象。 给关系对象一个类型对象来表示关系的含义。（类型对象是多值属性的名称。）</span>](#63 "Create a relationship object for each link between the two objects. Give the relationship object a type object to indicate the meaning of the relationship.(The type object is the name of the multi-valued property.)")
+---
 
-- 类型化关系的优势在于它能够与双向关系良好地协作它提供了一个简单的点来添加关系的属性。 （后者当然是一个单独属性的功能）。您可以为此模式添加复杂的知识级别，沿着与键入的动态属性大致相同的路线。不过你应该考虑一下界面影响。类型化的关系迫使用户意识到雇佣对象，因为确实使用单独的属性。事实上，人们倾向于将财产对象看作是一个完全成熟的对象，而不是一个人（或公司）的一些财产。但合格的关联通常可以为许多目的提供更简单的接口。所以每当你看，或者你正在考虑使用，一种类型的关系;你也应该考虑一下合格的协会形式。您可以在任一方向或两个方向使用它，也可以使用它除了类型化的关系，或者除此之外。
-- 但是这两种模式并不完全相同。如果你使用图9，你正在指出一个雇主只能是某一特定工种的雇主。图8没有这样的尽管大多数建模者会暗示这样的约束，除非工作有附加属性。当然，就业往往是有的附加属性。一个常见的例子是日期范围（如问责制[Fowler，AP2.4节。
+- [<span id="64">类型化关系的优势在于它可以很好地处理双向关系，并且为关系添加属性提供了一个简单的点。（当然，后者是一个`分离属性`的特征。）你可以在这个模式中添加一个复杂的知识级别，跟类型化的`动态属性`一样。但是，您应该考虑接口的影响。类型化关系迫使用户意识到雇佣对象，因为确实使用`分离属性`。事实上，人们倾向于将属性客体本身看作完全成熟的客体，而不是人（或公司）的一些属性。 但是合格的关联通常可以为许多目的提供更简单的接口。所以每当你看到，或者你正在考虑使用，一个类型的关系;你还应该考虑合格的关联形式。您可以在任何一个方向或两个方向上使用它，也可以将其用于除了键入的关系之外，或者除此之外。。</span>](#64 "The strengths of typed relationship are that it works well with bi-directional relationships, and that it provides a simple point to add properties to the relationship. (The latter, of course, is a feature of separate properties.) You can add a sophisticated knowledge level to this pattern,along much the same lines as typed dynamic properties. However you should consider the interface implications. Typed relationships force users to be aware of the employment object,as indeed does any use of separate properties. Indeed people tend to see the property object as a full fledged object in its own right, rather as some property of the person (or company). But the qualified association can often provide a simpler interface for many purposes. So whenever you see, or you are considering using, a typed relationship; you should also consider the qualified association form. You can use it in either or both directions, and use it either in addition to the typed relationship, or in addition to it.")
+
+- [<span id="65">但是这两种模式并不完全相同。如果使用图9，则表示雇主只能是某种特定工种的雇主。图8在图表中没有这样的约束，尽管大多数建模者会暗示这样的约束，除非雇用具有附加属性。当然，就业通常具有附加属性。一个常见的例子是日期范围（如问责制\[Fowler，AP§2.4\]）。</span>](#65 "The two models are not quite identical however. If you use Figure 9 you are indicating that an employer can only be an employer once for a particular employment type. Figure 8 has no such constraint in the diagram as it stands, although most modelers would imply such a constraint,unless the employment had additional attributes. Often, of course, the employment does have the additional attributes. A common example is a date range (as in accountability \[Fowler, AP §2.4\].")
 
 ![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/14_1.png)
-> 图9.使用与图8相同情况的合格关联
+#### 图9.使用与图8相同情况的合格关联
 
 ```java
-public Person
-public void addEmployer (Company company, EmploymentType type);
-public Enumeration getEmployersOfType (EmploymentType type);
+public Person {
+    public void addEmployer (Company company, EmploymentType type);
+    public Enumeration getEmployersOfType (EmploymentType type);
 ```
-> 列举17, 图9的接口
+#### 列举17, 图9的接口
 
 ![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/15_1.png)
-> 图10.键入的关系，显示通常假定的约束
+#### 图10.键入的关系，显示通常假定的约束
 
 ---
 ## 不同种类的人
-- 到目前为止，我们假设我们只有一种人，并且我们定义了一个属性人是所有人的有效财产。但是，你确实有你的情况不同类型，不同类型的属性。经理可能需要一个财产部门管理，执行可能需要一个财产的行政洗手间的关键号码（在一个不是90年代的公司）。
+- [<span id="66">到目前为止，我们假设我们只有一种人，我们为一个人定义的任何属性都是所有人的有效属性。但是，您确实会遇到不同类型的情况，以及不同类型的不同属性。管理人员可能需要一个管理部门的属性，执行人员可能需要一个属性作为高管卫生间的关键号码（在一个不是90年代的公司）。</span>](# "So far we are assuming we only have one kind of person, and any properties we define for a person are valid properties for all people. However you do get situations where you have different types, and different properties for different types. A manager may need a property for department managed, an executive may need a property for executive washroom key number (in a not very 90’s company).")
 
-- 别担心，我听到“使用继承愚蠢”的呼声。事实上，这是其中的一种情况这通常用于子类型。其实它比这个更涉及，特别是当你开始思考一个人可能扮演的角色。我已经写了一整篇文章模仿角色[福勒角色]的主题。角色模式考虑我们的情况对操作的变化和固定属性的变化感兴趣。但在这种情况下，我要探索不同类型的对象与动态属性的概念的重叠。这种重叠产生了动态属性知识水平模式（一个名字越来越少我的口味太大）。
+- [<span id="67">别担心，我听到“使用继承愚蠢”的呼声。事实上，这是常用于分类的情况之一。实际上，这个过程比这个要复杂得多，特别是当你开始思考一个人可能扮演的角色时。我已经写了关于建模角色\[Fowler roles\]的主题的全文。角色模式考虑了我们对操作变化和`固定属性`变化感兴趣的情况。但在这种情况下，我想探索不同类型的对象与`动态属性`的概念的重叠。这种重叠会导致`动态属性知识级别模式`（一个对我的品味有点太大的名字）。</span>](#67 "Don’t worry, I hear the cries of “use inheritance stupid”. Indeed this is one of the situations that is often used for subtyping. Actually it gets rather more involved than that, particularly when you start thinking of the various roles a person may play. I’ve written a whole paper on the subject of modeling roles \[Fowler roles\]. The roles patterns consider cases where we are interested in variations in operations and in variations of fixed properties. But in this case I want to explore the overlap of different kinds of object with the notion of dynamic properties. This overlap begets the dynamic properties knowledge level pattern \(a name that is getting a little too large for my taste\).")
 
-- 为了使用这个模式，我们给Person一个Person类型的类型对象。那我们可以这样说人员类型与联系人类型的关联指示哪些人员可用的属性谁有那个人类型如果我们试图使用，或要求，在一个人的财产人类型可以用来检查使用是否正确。
+- [<span id="68">为了使用这个模式，我们给`Person`一个`Person`类型的`类型对象`。然后，我们可以说，人物类型与联系人类型的关联指示哪些人物拥有该人物类型可用的属性。 如果我们尝试使用或要求某人的属性，则可以使用人员类型来检查使用情况是否正确。</span>](#68 "To use the pattern we give the Person a type object of Person Type. We can then say that the person type’s association to contact type indicates which properties are available for people who have that person type. If we try to use, or ask for, a property on a person the person type can be used to check that the usage is correct.")
 
 ![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/16_1.png)
-> 图11.动态财产知识水平
+#### 图11.动态财产知识水平
 
 ```java
 class Person {
-public Object getValueOf(ContactProperty key);
-public boolean hasProperty(ContactProperty key);
-public void setValueOf(ContactProperty key, Object newValue);
+    public Object getValueOf(ContactProperty key);
+    public boolean hasProperty(ContactProperty key);
+    public void setValueOf(ContactProperty key, Object newValue);
 class PersonType {
-public boolean hasProperty(ContactProperty key);
-public Enumeration getProperties();
+    public boolean hasProperty(ContactProperty key);
+    public Enumeration getProperties();
 ```
-> 列举18, 图11的操作
+#### 列举18, 图11的操作
 ```java
 class Person {
-public Object getValueOf (ContactProperty key) {
-if (!hasProperty(key))
-throw IllegalArgumentException(“Innapropriate key”);
-//return the value
+    public Object getValueOf (ContactProperty key) {
+        if (!hasProperty(key))
+            throw IllegalArgumentException(“Innapropriate key”);
+            //return the value
 ```
 > 列举19, 检查具有动态属性知识级别的适当的密钥
 
-- 当我们开始使用这样的知识水平时，单独的财产变得越来越多重要。在这种情况下，我们很快就会开始停止将其视为一种财产，而不是某种客体在自己的权利。什么是财产和什么不是非常模糊的界限，这实际上取决于你对事物的看法。
+- [<span id="69">当我们开始使用这样的知识水平时，单独的属性变得越来越重要。 在这种情况下，我们很快就会开始停止将其视为一种属性，而不是把它作为一个对象。 什么是属性和什么是非属性之间的分界线是非常模糊的，这实际上取决于你对事物的看法。</span>](#69 "As we start to use a knowledge level like this, the separate property becomes more and more important. In this case we soon start to stop thinking of it as a property, rather as some object in its own right. The dividing line between what is a property and what isn’t is very blurred,and it really depends upon your view of things.")
 
-```
-动态财产知识水平
-你如何执行某些类型的对象具有某些特性使用动态属性？
-创建一个知识级别来包含什么类型的对象使用的规则哪些类型的属性
-```
+---
+<h3 align = "center">动态属性知识水平</h3>
+- [<span id="70">你如何执行某些类型的对象具有某些特性使用动态属性？</span>](#70 "How do you enforce that certain kinds of objects have certain properties when you use dynamic properties?")
+- [<span id="70">创建一个知识级别来包含什么类型的对象使用的规则哪些类型的属性</span>](#70 "Create a knowledge level to contain the rules of what types of objects use which types of properties")
+---
 
 ---
 
-## 动态属性的几个小结
+## [<span id="71">动态属性的几个小结</span>](#71 "Some Summary Points on Dynamic Properties")
 
-- 各种各样的动态属性构成了本文的大部分内容。但我必须重申那动态属性是我想要尽可能避免的。动态特性带来了沉重的负担：接口不够清晰，使用困难操作而不是存储的数据。只是有时候你别无选择，只能用他们在这种情况下，这个文件应该有用的给你一些替代品和之间的权衡。
+- [<span id="72">各种各样的`动态属性`构成了本文的大部分内容。但我必须重申，`动态属性`是我想要尽可能避免的。`动态属性`带来了很大的负担：接口不够清晰，使用操作而不是存储数据的困难。只是有时你别无选择，只能使用它们，在这种情况下，这篇论文应该有用的给你提供一些替代方案和之间的权衡。<span>](#72 "Various kinds of dynamic properties make up the bulk of this paper. But I have to reiterate that dynamic properties are something I like to avoid if at all possible. Dynamic properties carry a heavy burden of disadvantage: the lack of clarity of the interface, the difficulty in using operations instead of stored data. It is just that sometimes you have little choice but to use them, and it is on these occasions that this paper should come in useful to give you some alternatives and the trade-offs between then.")
 
-- 动态属性出现在改变界面有困难的地方。人谁与分布式对象系统一样工作，至少在原则上，因为它允许他们可以在不损害客户的情况下改变界面-而在分布式系统中则可能很难找到你的客户。但是你仍然应该警惕这样做。任何当你为你有效改变的动态属性添加一个新的密钥界面。所有的动态属性都在替换运行时检查的编译时间检查。你仍然有同样的问题保持你的客户最新。
+- [<span id="73">`动态属性`出现在改变接口有困难的地方。那些使用像他们这样的分布式对象系统的人，至少在原则上是这样，因为它允许他们在不改变客户端的情况下改变接口 - 而在分布式系统中，可能很难找到你的客户端。但是你仍然应该警惕这样做。每当你为`动态属性`添加一个新的键到你的键上，你都在有效地改变接口。所有的`动态属性`都在替换运行时检查的编译时间检查。你仍然有同样的问题保持你的客户端最新。</span>](#73 "Dynamic properties appear most where there are difficulties in changing the interface. People who work with distributed object systems like them, at least in principle, because it allows them to alter an interface without compromising clients – and in a distributed system it may be very difficult to find who your clients are. But you should still be wary of doing this. Any time you add a new key to your keys for the dynamic properties you are effectively changing the interface. All the dynamic properties are doing is replacing a compile time check for a runtime check. You still have the same issues of keeping your clients up to date.")
 
-- 动态属性的另一个常见用途是在数据库中。这不仅仅是因为这个接口问题，而且由于数据迁移的问题（如果不是主要的话）。改变一个数据库模式不仅会对使用该模式的程序造成潜在的变化，可能会迫使你做一个复杂的数据转换练习。动态属性也是允许的你可以在不改变数据库模式的情况下改变一些东西，从而不需要做任何事情
-数据转换。在大型数据库中，这可能是一个引人注目的优势。
+- [<span id="74">`动态属性`的另一个常见用途是在数据库中。这里不仅仅是由于接口的问题，而且由于数据迁移的问题（如果不是主要的话）。更改数据库模式不仅会导致对使用该模式的程序进行潜在更改，还可能会强制您执行复杂的数据转换练习。同样，`动态属性`允许您在不更改数据库模式的情况下更改内容，从而不需要进行任何数据转换。在大型数据库中，这可能是一个引人注目的优势。</span>](#74 "Another common use of dynamic properties is in databases. Here it is not just due to the problem of interface, but also (if not primarily) due to problems of data migration. Changing a database schema does not only cause a potential change to programs using the schema, it also may force you to do a complicated data conversion exercise. Again dynamic properties allow you to change things without changing the database schema, and thus not needing to do any data conversion. In large databases this can be a compelling advantage.")
 
 ---
 
-## 你不知道的属性
+## [<span id="75">一个你不知道的有关于属性的](#75 "A property you don’t know about")
 
-- 我想在本文中添加一个最后一个重要的属性。情况就是如此具有财产的物体没有意识到。当财产被隐含时，会发生这种情况另一个对象和它与你有关的方式。
+- [<span id="76">我想在本文中添加一个最后一个重要的属性。这是一个没有意识到属性的对象的情况。当属性被另一个对象所隐含，以及与有关的方式时，就会发生这种情况。</span>](#76 "There is a last but important kind of property that I want to add to this paper. This is the case of an object having a property without realizing it. This occurs when the property is implied by another object and the way it relates to you.")
 
-- 考虑一个管理数据库连接的对象。它创建了一堆数据库连接并在请求时将它们交给其他对象。当一个客户端完成这个连接可以将它返回给管理员，以供其他人使用。你可以做这通过向连接添加一个isBusy属性。图12显示了使用一个替代方案外在财产。连接是空闲的还是繁忙的，取决于收集的内容它所在的连接管理器。如果你有一个连接，你不能问它是否是自由或忙碌，相反，你将不得不问连接管理器是否一个特定的连接空闲或忙碌。你可以这样说，因为组合关联是一种方式。连接不知道连接管理器。在某种意义上说是忙/闲状态根本不是一个连接的属性。但至少从某种意义上说，这就是我提到它的原因。
+- [<span id="77">考虑一个管理数据库连接的对象。它会创建一堆数据库连接，并在请求时将它们传递给其他对象。当一个客户端连接完成后，可以将其返回给管理员，以供其他人使用。您可以通过向连接添加`isBusy`属性来完成此操作。图12显示了一个使用外部属性的替代方案。连接是空闲的还是繁忙的是由连接管理器中的哪个集合决定的。如果你有一个连接，你不能问它是空闲的还是忙的，而是你必须要求连接管理器是否特定的连接空闲或忙碌。你可以这样说，因为组合关联是一种方式。连接不知道连接管理器。 从某种意义上来说，空闲/忙碌状态根本不是连接的属性。但至少从某种意义上来说，这就是我提到它的原因。</span>](#77 "Consider an object that manages database connections. It creates a bunch of database connections and hands them out to other objects when requested. When a client is done with the connection it can return it to the manager to be available for someone else. You could do this by adding an isBusy property to the connection. Figure 12 shows an alternative using an extrinsic property. Whether the connection is free or busy is determined by which collection in the connection manager it lies in. If you had a connection, you could not ask it whether it is free or busy, instead you would have to ask the connection manager whether a particular connection is free or busy. You can tell this because the composition associations are one way.The connection has no knowledge of the connection manager. In a sense the free/busy status isn’t a property of connection at all. Yet at least in some sense it is, which is why I mention it.")
 
 ![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/17_1.png)
-> 图12.使用外部收集属性
+#### 图12.使用外部收集属性
 
-- 在纯粹的概念模型意义上，这种模式没有多大意义。 但是这里有实际的实施原因，你可能想要使用它。 如果你想对此做所有更改财产要经过一个连接管理者，那么这个方法就说明了这一点。在特别是当你想让连接管理员免费给你时，这是一种自然的风格连接，你不关心哪一个。
+- [<span id="78">在纯粹的概念模型意义上，这种模式没有多大意义。但是，为什么你可能想要使用它，有实际的实施原因。如果您希望对此属性进行的所有更改都通过连接管理器进行，则此方法可以清楚地说明这一点。特别是当你想让连接管理器给你一个自由的连接，而你不关心哪一个时，这是一种自然的风格。</span>](#78 "In a pure conceptual modeling sense this pattern does not make much sense. But there are practical implementation reasons why you may want to use it. If you want all changes to this property to go through a connection manager, then this approach makes this clear. In particular this is a natural style when you want the connection manager to give you a free connection and you don’t care which one.")。
 
-- 使用外部属性的另一个原因是如果连接类是由某人提供的否则你不能改变它的接口。您可以添加新的属性而不更改连接类。
+- [<span id="79">使用外部属性的另一个原因是如果连接类是由其他人提供的，并且您不能更改其接口。 你可以添加新的属性而不用改变连接类。</span>](#79 "Another reason to use an extrinsic property is if the connection class is provided by someone else and you can’t change its interface. You can add the new property without changing the connection class at all.")
 
-```
+---
 外在属性
-你如何给对象一个属性而不改变它的接口？
-让另一个对象负责知道这个属性。
-```
-- 外在性质的一个大问题是它会导致一种尴尬和不自然的现象接口。通常如果你想知道什么，你只需找到合适的对象并询问它。 在这里你需要找到持有外部集合的对象，并询问它适当的对象。在某些情况下，比如这个，似乎是合理的。 但大部分我宁愿让对象了解自己的属性（在这种情况下，我打电话他们的内在属性）。
+- [<span id="80">你如何给对象一个属性而不改变它的接口？</span>](#80 "How do you give an object a property without changing its interface?")
+- [<span id="80">让另一个对象负责知道这个属性。</span>](#80 "Make another object responsible for knowing about the property.")
+---
+
+- [<span id="81">`外在属性`的一个大问题是它会导致一个尴尬和不自然的接口。通常如果你想知道一些东西，你只要找到合适的对象并提出问题。在这里您需要找到保存外部集合的对象，并询问有关适当的对象。在某些情况下，比如这个，似乎是合理的。但大多数情况下，我宁愿让对象了解自己的属性（在这种情况下，我称之为`内在属性`）。</span>](#81 "The big problem with the extrinsic property is that it leads to an awkward and unnatural interface. Usually if you want to know something, you just find the appropriate object and ask it. Here you need to find the object that holds the external collection, and ask it about the appropriate object. In some circumstances, such as this one, it seems reasonable. But most of the time I would prefer to let objects know about their own properties (in which case I call them intrinsic properties).")
 
 ---
 
 ## 最后的想法
 
-- 当我完成本文时，我觉得需要再次敦促你不要使用我一直在写的东西这里除非你真的需要它。固定属性的好处是伟大的。 如果你需要别的，那么我希望这篇论文给你一些想法和一些指导。但是固定的物业永远是你的第一选择。
+- [<span id="82">当我完成本文时，我觉得需要再次敦促你不要使用我在这里写的东西，除非你真的需要它。`固定属性`的好处是伟大的。如果你需要别的东西，那么我希望这篇文章能给你一些想法和一些指导。但`固定属性`永远是你的第一选择。</span>](#82 "As I finish this paper, I feel the need again to urge you not to use what I’ve been writing about here unless you really do need it. The advantages of fixed properties are great. If you need something else, then I hope this paper gives you some ideas and some guidance. But fixed properties are always your first choice.")
 
 ---
 
