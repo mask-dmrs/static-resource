@@ -115,142 +115,145 @@ class Person {
             return getVacationPhone();
         // else return stored value…
 ```
-#### 列举4,用操作替换动态属性
+#### 列举4,用操作替换`动态属性`
 
-- 其他形式的动态属性可以帮助您解决其中一些问题，但不是全部。该动态属性的根本缺点是你失去了清晰的界面和所有的设计时间检查。动态属性的不同方法给你不同的能力运行时检查。如果你需要动态属性，并且当然有确定的情况你这样做，那么你只需要放弃设计时间检查和明确的设计时间接口。唯一的问题是如何明确界面和多少检查你可以做的在运行时。使用灵活的动态属性，你也不会得到任何一个。
+- [<span id="33">其他形式的动态属性可以帮助您解决其中一些问题，但不是全部。该`动态属性`的最大的缺点是：你失去了清晰的接口和所有的设计时间检查。`动态属性`的不同方法会让你额外写不同的检查方法。如果你需要`动态属性`，并且当然有确定的情况你这样做，那么你只需要放弃设计时间检查和明确的设计时间接口。唯一的问题是如何明确接口和有多少运行时检查。使用灵活的动态属性也会有同样的问题。</span>](#33 "Other forms of dynamic property help you solve some of these problems but not all. The essential disadvantage of a dynamic property is that you lose the clear interface and all designtime checking. Different approaches to dynamic properties give you different abilities to do run-time checking. If you need dynamic properties, and there are certainly situations when you do, then you just have to give up design time checking and a explicit design time interface. The only question is how explicit an interface and how much checking you can do at run time. With Flexible Dynamic Properties you don’t get any of either.")
 
-- 你经常在数据库中发现动态属性，因为改变它通常是一个痛苦数据库模式，特别是如果有大量的数据迁移。分布式的接口例如在CORBA中的组件也经常因为相似的原因而使用动态属性。那里是很多使用界面的远程客户，所以你不愿意改变它。在这两个这些情况并不是编译时和运行时间的区别，而是一个区别设计时间和生产之间的区别。
+- [<span id="34">你经常在数据库中发现动态属性，因为改变它通常是一个痛苦数据库模式，特别是如果有大量的数据迁移。分布式的接口例如在`CORBA`中的组件也经常因为相似的原因而使用动态属性。那里是很多使用界面的远程客户，所以你不愿意改变它。在这两种情况下，编译时和运行时间之间的区别并不是设计时和生产之间的区别。</span>](#34 "You find dynamic properties often in databases because it is often a pain to change the database schema, especially if there would be a lot of data to migrate. Interfaces of distributed components, such as in CORBA, also often use dynamic properties for a similar reason. There are a lot of distant clients using the interface, so you are reluctant to change it. In both of these cases it is not so much a distinction between compile-time and run-time, as much as a distinction between design-time and production.") 
 
-- 如果你正在做的是通过GUI显示和更新信息，而代码永远不会对键进行固定的引用（即，你永远不会看到像清单3那样的代码），那么你很漂亮安全，灵活的动态属性。这是因为你没有建立一个讨厌的依赖以一些任意字符串作为关键字。否则，你应该考虑其他方法之一动态属性。
+- [<span id="35">如果你正在做的是通过`GUI`显示和更新信息，而代码永远不会对键进行固定的引用（即，你永远不会看到像清单3那样的代码），那么使用灵活`动态属性`就非常安全。这是因为你没有设置一个任意字符串作为一个关键的讨厌的依赖。 否则，你应该考虑`动态属性`的其他方法之一。</span>](#35 "If all you are doing is displaying and updating information via a GUI, and the code never makes a fixed reference to the keys (i.e. you never see code like Listing 3), then you are pretty safe with a Flexible Dynamic Property. This is because you have not set up a nasty dependency to some arbitrary string as a key. Otherwise you should consider one of the other approaches to dynamic properties.")
 
-- 更多运行时检查的第一步是定义的动态属性。钥匙定义相对于灵活的动态属性之间的区别是所使用的关键动态属性不再是一些任意的字符串，而是现在某个类的一个实例（图3）。
+- [<span id="36">更多运行时检查的第一步是定义的动态属性。与`灵活动态属性`相反，定义的关键区别在于`动态属性`使用的关键字不再是一些任意的字符串，而是现在某个类的一个实例（图3）。</span>](#36 "The first step towards more run-time checking is the Defined Dynamic Property. The key difference between a defined as opposed to a flexible dynamic property is that the key used by the dynamic property is no longer some arbitrary string, but is now an instance of some class (Figure 3).")
 
 ![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/7_1.png)
-> 图3.定义的动态属性
 
--在它的表面上使用定义的动态属性并没有太大的改变。确实是代码接口几乎相同（清单5和清单6）。但现在不再选择密钥完全是任意的，它受到接触类型的限制。当然这仍然允许你在运行时添加属性-只需创建一个新的联系人类型。但现在至少有某处可以找到一个潜在的钥匙清单，而不必拖网程序文本。在设计时添加的任何密钥都可以在加载程序中收集接触式类。 您可以轻松地提供服务，以在运行时查找合法的密钥。
+#### 图3.定义的`动态属性`
+
+- [<span id="37">在它的表面上使用定义的`动态属性`并没有太大的改变。事实上，代码界面几乎完全相同（清单5和清单6）。但是现在，关键字的选择不再是完全随意的，而是受到接触`类型`的限制。当然，这仍然允许您在运行时添加`属性`-只需创建一个新的关联`类型`。不过现在至少在某个地方可以找到一个潜在的`键`列表，而无需浏览程序`代码`。 在设计时添加的任何键都可以在关联类型类的加载程序中收集。您可以轻松地提供服务，以在运行时查找合法的`键`。</span>](#37 "On the face of it using defined dynamic property does not change much. Indeed the code interface is almost identical (Listing 5 and Listing 6). But now the choice of keys is no longer entirely arbitrary, it is limited by the instances of contact type. Of course this still allows you to add properties at run time – you just create a new contact type. However now there is at least somewhere someone can look to get a list of potential keys without having to trawl through the program text. Any keys added at design time can be collected in a loader routine in the contact type class. You can easily provide services to find out the legal keys at run time.")
+
 ```java
 class Person {
-public Object getValueOf(ContactType key);
-public void setValueOf(ContactType key, Object value);
+    public Object getValueOf(ContactType key);
+    public void setValueOf(ContactType key, Object value);
 ```
 #### 列举5, 图3的Java接口
 ```java
 class ContactType {
-public static Enumeration instances();
-public static boolean hasInstanceNamed(String name);
-public static ContactType get(String name);
+    public static Enumeration instances();
+    public static boolean hasInstanceNamed(String name);
+    public static ContactType get(String name);
 ```
 #### 列举6,为定义的属性类型提供的服务
 
-- 特别是你现在可以设置一些检查，以防止由于某人要求的错误动态属性不存在，如清单7所示。我抛出一个未经检查的异常这里是因为我认为get（）的前提是客户端提供了一个合法的名字对于联系人类型。客户可以通过使用来始终履行这个责任hasInstanceNamed（），但大多数时候客户端软件会挂在联系人类型上对象，而不是字符串。
-
-```
-定义的动态属性
-你如何代表一个对象的事实？
-提供用某种类型的实例参数化的属性。 至声明一个属性创建一个新类型的实例
-```
-- 通常，联系人类型将保存在字典中，通常由字符串索引。这个字典可能是一个静态的联系人类型的字段，但是我更愿意把它作为注册服务器上的字段。删除联系人类型仍然具有尴尬的后果。在java中的动态属性仍然会出现在那些拥有它们的物体上，除非你写了一些复杂的东西清理代码。我通常会规定永远不要删除DefinedDynamic的键属性。 如果你想使用一个新的名字，你可以很容易地通过给它一个别名的联系人类型名字，但多次放入定义字典中。
-
-```java
-class ContactType {
-public static ContactType get(String name) {
-if (! hasInstanceNamed (name)) throw new IllegalArgumentException(“No
-such contact type);
-// return the contact type
-}
-// use with
-Address kentVactation =
-(Address) kent.getValueOf(ContactType.get(“VacationAddress”));
-```
-> 列举7, 检查使用合法合同类型
-
-- 在这一点上，你可能想知道这与概念建模有什么关系，毕竟我写了很多代码并讨论设计的权衡。这是一个重要的概念上的问题，因为你所做的概念选择会影响执行选项你有。如果你选择在你的概念模型中使用灵活的动态属性，你是使你很难在你的定义中使用定义的动态属性或固定属性实现。你做概念模型的原因之一是探索什么是固定的用户的概念有什么变化。如果全面的灵活性是我唯一的目标，那么我会总是使用图4.通过这个，我可以模拟世界上的任何情况。但是这个模型不是很有用。它的无用性来自事实，它不表示什么是固定的。什么时候你正在做一个概念模型，你需要知道你的选择如何影响事物实施-否则你放弃你作为建模者的责任。我经常发现人们发现动态属性，然后想要在任何地方使用它们。灵活性如此之大，他们获得了所有的可扩展性。是的，有时候你
-需要动态属性。但永远不会忘记有一个价格。只有当你真的使用它们需要他们。毕竟，如果必须，以后很容易添加它们。
-
-![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/8_1.png)
-> 图4.一个可以无用建模任何域的模型
-
-- 定义的动态属性允许您更多地指出您的属性有。这些属性仍然是无类型的。你不能执行假期的价值图3中的地址是一个地址。 你可以通过使用类型动态来做些什么属性。
-
-![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/9_1.png)
-> 图5.为使用限定关联的类型化动态属性建模
-
--类型化动态属性将类型信息添加到定义的动态属性（图6和6）图5）。这里的联系人类型的实例不只是指出该人是什么合适的人有，他们也表示每个财产的类型。 类型约束的价值，沿线清单9。
-
-```java
-class Person {
-public Object getValueOf(ContactType key);
-public void setValueOf(ContactType key, Object value);
-class ContactType {
-public Class getValueType();
-public ContactType (String name, Class valueType);
-```
-> 列举8, 键入动态属性的操作
-
-```java
-class Person {
-public void setValueOf(ContactType key, Object value) {
-if (! key.getValueType().isInstance(value))
-throw IllegalArgumentException (“Incorrect type for property”);
-// set the value
-```
-> 列举9, 做类型检查
-
-- 这样做类型检查可以帮助避免错误，但是仍然不够明确属性。检查是在运行时间，而不是在设计时间，因此没有那么有效。还是比没有检查好，尤其是如果你习惯于强类型的话环境。
-
-```
-类型动态属性
-你如何代表一个对象的事实？
-提供使用某种类型的实例进行参数化的属性。 声明一个属性创建一个新类型的实例并指定值的类型属性。
-```
-
-- 当我们深入研究动态属性时，我们发现了更加丰富的反射的例子当我们获得能够描述的运行时对象时出现的架构模式他们自己。 [POSA]比我打算在这里更详细地讨论反思。
-
-- 动态属性提供反射功能，即使在那些不支持的语言中也是如此反思自己。即使用一种语言，也反映了一些思考
-的动态属性更专注 - 所以你可以提供一个更易于使用的界面。
-
-- 使用所有这些合格的协会可能会很难遵循。 另一种方式提供类型化的动态属性是使用单独的属性模式。 的本质单独的属性模式是它使属性成为它自己的一个对象（图6和6）清单10）。你可以得到一个人的财产，然后与每个财产得到价值和类型信息。
-
-```
-分开的属性
-你如何代表一个事物的事实，并允许事实记录这个事实
-为每个属性创建一个单独的对象。 有关该财产的事实可以然后被做成那个对象的属性。
-```
-
-- 独立的属性和合格的关联是两种可供选择的选择动态属性。到目前为止，我已经描述了灵活和定义的动态属性
-合格的协会，因为合格的协会提供了一个更容易使用的界面。如果您愿意，您可以使用灵活和定义的具有单独属性的动态属性，虽然我不打算在这里进入。当我们谈到类型动态的复杂性时属性和分开的财产风格变得更有优势。
-
-![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/10_1.png)
-> 图6.为分类的动态属性建模，使用单独的属性
-
-```java
-class Person {
-public Enumeration getProperties();
-class ContactProperty {
-public Object getValue();
-public Class getType();
-public ContactType getIndex();
-```
-> 列举10, 使用单独属性的类型化动态属性的操作
-
-- 单独的属性和有限的关联不是相互排斥的。你可以很容易同时提供两个接口。这样你就得到了两者的优点。当然这使得界面更加复杂，所以首先要考虑人的客户需要什么。给他们他们需要的接口，不要让它过于复杂。但如果他们需要两个合格的协会和单独的财产，那么这是一个合理的选择。我会通常总是使用有价值的关联来获得价值，但它可能没有多少意义方式。
-
-- 您也可以在这里考虑接口/实现的差异。在本文中，我想专注于概念-映射到软件界面而不是其界面实现。但值得一提的是，你可以提供一个合格的协会接口，同时在实现中使用单独的对象。你只使用单独的如果一个人的客户端可以获得一个联系人属性对象，则在界面中的属性。通常是这样有助于隐藏单独的属性来简化客户端的接口。
-
-- 独立属性的一大优势是它可以让你放置信息关于财产的财产。这些信息可能包括谁决定的财产，何时确定，等等。 [Fowler AP§3.5]中的观察模式在一定的深度上建立在这个主题上。我在这里描述的很多东西如果你需要单独的属性，观察是值得考虑的。 （我看到了观察模式作为独立属性的使用。）
-
-- 您可能想知道单独的属性（一个模式）与合格的对比关联（一个UML建模结构）。你也可以把有资格的协会想象成一个模式，关联模式。事实上，我在[FowlerAP§15.2]中做了这个。我找到了有助于将建模作为模式来思考，因为这有助于我考虑权衡在使用它们。当你比较它们的东西时，这是特别有用的更清晰的模式，如单独的财产。当然，以模式开始的事情可以被转换成建模结构，特别是如果你使用UML原型。历史悠久映射模式[FowlerAP§15.3]就是一个很好的例子。我代表那个使用“历史”刻板印象。这是一个模式或建模？也许这是一个地板蜡和一个
-沙漠也打顶了。
+- [<span id="38">你现在可以设置一些检查来防止由于某人要求一个不存在的`动态属性`而导致的错误。我在这里抛出一个未经检查的`异常`，因为我认为`get（）`的前提条件是`客户端`为联系人类型提供合法名称。客户端总是可以通过使用`hasInstanceNamed（）`来执行这个检查，但是大多数情况下客户端使用的是类型而不是字符串。</span>](#38 "In particular you can now set up some checking to prevent errors due to someone asking for a dynamic property that does not exist as in Listing 7. I’m throwing an unchecked exception here because I consider that the precondition for get() is that the client provides a legal name for a contact type. The client can always fulfill this responsibility by using hasInstanceNamed(), but most of the time client software will hang on to contact type objects, not strings.")
 
 ---
-## 具有多值关联的动态属性
 
-- 我上面的例子集中在每个密钥都有一个单一值的情况动态属性。但是你也可以有一些情况，其中有多个项目
-动态属性。与人，你可能会考虑一个多值的朋友财产。有两种方法可以解决这个问题，一个简单而不令人满意，另一个就是这样满足，但（太）复杂。
+<h3 align = "center">定义动态属性</h3>
+- [<span id="39">你如何代表一个对象的事实？</span>](#39 "How do you represent a fact about an object?")
+- [<span id="39">提供用某种类型的实例参数化的属性。声明一个属性创建一个新类型的实例</span>](#39 "Provide an attribute parameterized with an instance of some type. To declare a property create a new instance of that type") 
+
+---
+
+- [<span id="40">通常，联系人类型将保存在字典中，通常由字符串索引。这个字典可能是一个静态的联系人类型的字段，但是我更愿意把它作为注册服务器上的字段。</span>](#40 "Usually the contact types will be held in a dictionary, usually indexed by a string. This dictionary could be a static field of contact type, but I prefer to make it a field on a Registrar.")
+
+- [<span id="41">删除联系人类型仍然具有尴尬的后果。在`java`中的`动态属性`仍然会出现在那些拥有它们的对象上，除非你写了一些复杂的东西清理代码。我通常会规定永远不要删除动态属性的键。如果你想使用一个新的名字，你可以通过给它一个其他名字，但是把它放置在定义的字典中几次，很容易地为联系类型添加别名。</span>](#41 "Removing a contact type still has awkward consequences. In java the dynamic properties would still be present on those objects that had them, unless you write some complicated clean up code. I usually make it a rule to never delete the keys for a Defined Dynamic Property. If you want to use a new name you can easily alias the contact type by giving it one name but placing it in the defining dictionary several times.")
+
+```java
+class ContactType {
+    public static ContactType get(String name) {
+        if (! hasInstanceNamed (name)) throw new IllegalArgumentException(“No such contact type);
+        // return the contact type
+}
+// use with
+Address kentVactation = (Address)kent.getValueOf(ContactType.get(“VacationAddress”));
+```
+#### 列举7, 检查使用合法合同类型
+
+- [<span id="42">在这一点上，您可能想知道这与概念建模有什么关系，毕竟我写了很多代码并讨论了设计的权衡。这是一个重要的概念问题，因为您所做的概念选择会影响您的实现选择。如果你选择在你的概念模型中使用`灵活动态属性`，你很难在你的实现中使用定义的`动态属性`或`固定属性`。你做概念模型的原因之一是探索你的用户的概念是什么固定的，什么是可变的。如果全面的灵活性是我唯一的目标，那么我会总是使用图4.通过这个，我可以模拟世界上的任何情况。但是这个模型不是很有用。它在现实项目中是没用的，它不表示什么是固定的。什么时候你正在做一个概念模型，你需要知道你的选择如何影响项目实施-否则你失去了作为建模者的作用。</span>](#42 "At this point you might be wondering about what this has to do with conceptual modeling,after all I am writing a lot of code and discussing design trade-offs. This is an important conceptual issue because the conceptual choice you make affects the implementation options you have. If you choose to use flexible dynamic attributes in your conceptual model, you are making it pretty hard to use either defined dynamic attributes or fixed attributes in your implementation. One of the reasons you do conceptual models is to explore what is fixed and what is changeable in your users’ concepts. If total flexibility was my only goal then I would always use Figure 4. With this I can model any situation in the world. But this model is not very useful. Its uselessness comes from the fact that it does not indicate what is fixed. When you are doing a conceptual model you need to be aware of how your choices affect things in implementation – otherwise you are abdicating your responsibility as a modeler.")
+
+- [<span id="43">我经常发现人们发现`动态属性`，然后想要在任何地方使用它们。灵活性如此之大，他们获得了所有的可扩展性。是的，有时候你需要`动态属性`。但永远不会忘记有一个标准。只有当你真的使用它们需要他们才用。毕竟，如果必须使用，以后很容易添加它们。</span>](#43 "I often find that people discover dynamic properties, and then want to use them everywhere. The flexibility is so great, they get all the extendibility they ever want. Yes sometimes you need dynamic properties. but never forget there is a price. Only use them when you really need them. After all it is easy to add them later if you have to.")
+
+![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/8_1.png)
+#### 图4.一个可以无用建模任何域的模型
+
+- [<span id="44">`定义动态属性`允许您更多地指出你拥有的属性。这些属性仍然是无类型的。您不能强制图3中休假地址的值是一个地址。 你可以通过使用`类型动态属性`来做些什么。</span>](#44 "The Defined Dynamic Property allows you to indicate rather more about what properties you have. These properties are still untyped. You cannot enforce that the value of the vacation address in Figure 3 is an address. You can do something about that by using a Typed Dynamic Property.")
+
+![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/9_1.png)
+#### 图5.为使用限定关联的类型化动态属性建模
+
+- [<span id="45">`类型动态属性`将类型信息添加到定义的`动态属性`（图6和6）图5）。这里的联系人类型的实例不只是指出该人是什么合适的人有，他们也表示每个`属性`的类型。 类型约束的值，沿线清单9。</span>](#45 "A typed dynamic property adds type information to the defined dynamic property (Figure 6 and Figure 5 ). Here the instances of contact type do not just indicate what properites the person has, they also indicate the type of each property. The type constrains the value, along the lines of Listing 9.")
+
+```java
+class Person {
+    public Object getValueOf(ContactType key);
+    public void setValueOf(ContactType key, Object value);
+class ContactType {
+    public Class getValueType();
+    public ContactType (String name, Class valueType);
+```
+#### 列举8, 键入动态属性的操作
+
+```java
+class Person {
+    public void setValueOf(ContactType key, Object value) {
+        if (! key.getValueType().isInstance(value))
+            throw IllegalArgumentException (“Incorrect type for property”);
+        // set the value
+```
+#### 列举9, 做类型检查
+
+- [<span id="46">这样做类型检查可以帮助避免错误，但它仍然不像固定属性那样清晰。 检查是在运行时，而不是在设计时，因此不是有效的。但还是比没有检查好，特别是如果你习惯于强类型的环境时。</span>](#46 "Doing type checking like this can help to avoid errors, but it still is not as clear as fixed properties. The checking is at run time, not at design time, and is therefore not as effective. Still it is better than no checking at all, particularly if you are used to a strongly typed environment.")
+
+---
+<h3 align = "center">类型动态属性</h3>
+- [<span id="47">你如何代表一个对象的事实？</span>](#47 "How do you represent a fact about an object?")</br>
+- [<span id="47">提供使用某种类型的实例进行参数化的属性。声明一个属性创建一个新类型的实例并指定值的类型属性。</span>](#47 "")
+---
+
+- [<span id="48">当我们深入研究`动态属性`时，我们会发现更丰富的`反射`示例，这是一种架构模式，当我们获得能够描述自身的运行时对象时，就会出现这种模式。 \[POSA\]比我打算在这里更详细地讨论反思。</span>](#48 "As we delve deeper into dynamic properties, we find richer examples of reflection, an architectural pattern which appears when we get runtime objects that are able to describe themselves. [POSA] discusses reflection in much more detail than I intend to go into here.")
+
+- [<span id="49">动态属性提供反射功能，即使在那些不支持反射的语言中。即使使用了一种能够提供一些反射的语言，`动态属性`的反射也更加集中 - 所以您可以提供更易于使用的接口。</span>](#49 "Dynamic properties provide a reflective capability, even in those languages that don’t support reflection themselves. Even with a language that does provide some reflection, the reflection of dynamic properties is more focused – so you can provide an easier to use interface.")
+
+- [<span id="50">使用所有这些合格的关联可能会很难遵循。另一种方式提供`类型动态属性`是使用单独的属性模式。独立属性模式的本质是它使属性成为一个对象（图6和清单10）。 你可以获得一个人的属性，然后与每个属性获得值和类型信息。</span>](#50 "Using all of those qualified associations can get rather hard to follow. Another way of providing typed dynamic properties is to use the separate property pattern. The essence of the separate property pattern is that it makes the property an object in its own right (Figure 6 and Listing 10). You can get hold of the properties of a person, and then with each property get value and type information.")
 
 
-- 简单的方法就是说动态属性的值可以是一个集合。然后我们可以像使用相同接口的其他对象一样操作它（清单11）。这是好，简单，因为我们不必对基本的动态属性模式做任何事情。（这里的例子是一个类型化的动态属性，但它可以和所有的一起工作）但是，这并不令人满意，因为这不是我们想要处理多重价值的方式属性。如果朋友是一个固定的财产，我们会想沿着一个界面清单12.我不喜欢在这种情况下暴露vector。通过这样做，人类失去了当我们添加或移除元素时能够反应。这也消除了我们改变的能力我们正在使用的收集类型。
+---
+<h3 align = "center">分离属性</h3>
+- [<span id="51">你如何代表一个对象的属性，并允许属性记录这个属性<span>](#51 "How do you represent a fact about an object, and allow facts to be recorded about that fact")
+- [<span id="51">为每个属性创建一个单独的对象。有关该属性的子属性可以然后被做成那个对象的属性。<span>](#51 "Create a separate object for each property. Facts about that property can then be made properties of that object.")
+---
+
+- [<span id="52">`独立属性`和限定的关联`动态属性`总是可用的两种选择。 到目前为止，我已经用限定的关联描述了灵活的和定义好的`动态属性`，因为合格的关联提供了一个更容易使用的接口。如果你愿意的话，你可以使用灵活和定义的具有单独属性的`动态属性`，尽管我不打算进入在这里。当我们了解类型化`动态属性`的复杂性时，`分离属性`风格变得更有优势。<span>](#52 "Separate properties and qualified associations are two alternatives that are always available for dynamic properties. So far I’ve described flexible and defined dynamic properties with qualified associations because the qualified association presents a much easier interface to use.You can use flexible and defined dynamic properties with separate properties if you wish, although I’m not going to go into that here. As we get to the complexity of typed dynamic properties and onwards the separate property style becomes more of an advantage.")
+
+![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/10_1.png)
+#### 图6.为分类的动态属性建模，使用单独的属性
+
+```java
+class Person {
+    public Enumeration getProperties();
+class ContactProperty {
+    public Object getValue();
+    public Class getType();
+    public ContactType getIndex();
+```
+#### 列举10, 使用单独属性的类型化动态属性的操作
+
+- [<span id="53">`分离属性`和有限的关联不是相互排斥的。您可以轻松地同时提供两个接口。 这样你就得到了两者的优点。当然这会使接口更加复杂，所以先考虑一下用户的需求。给他们提供他们需要的接口，不要让接口变得复杂。但是，如果他们需要合格的关联和`分离属性`，那么这是一个合理的选择。我通常会使用合格的关联来获得值，但是这种类型可能没有多大意义。<span>](#52 "Separate properties and qualified associations are not mutually exclusive. You can easily provide both interfaces at the same time. This way you get the advantages of both. Of course that makes the interface more complex, so think first about what the clients of person need.Give them the interface they need, don’t make it over complex. But if they need both qualified associations and separate properties, then that is a reasonable option. I would normally always use qualified associations for the value, but it may not make as much sense for the type.")
+
+- [<span id="54">您也可以在这里考虑接口/实现的差异。在本文中，我想集中在概念上 - 它映射到软件的接口而不是实现。但值得一提的是，您可以在实现中使用单独的对象时提供合格的关联接口。如果人的客户端可以获取联系人属性对象，则只能在接口中使用单独的属性。通常隐藏`分离属性`以简化客户端的接口是有用的。</span>](# "You can also consider the interface/implementation differences here. In this paper I want to concentrate on the conceptual – which maps to the interface of software rather than its implementation. But it is worth mentioning that you can provide a qualified association interface while using separate object in the implementation. You are only using separate properties in the interface if a client of person can obtain a contact property object. Often it is useful to hide the separate property to simplify the interface for the client.")
+
+- [<span id="55">`分离属性`的一大优势是它可以让你把属性的信息放在属性中。 这些信息可能包括谁确定了属性，什么时候确定了属性等。 \[Fowler AP§3.5\]中的观察模式基于这个主题进行了深入的研究。如果您需要单独的属性，我在观察者模式所描述的大部分内容都值得思考。（我将观察模式看作是使用不同的属性。）</span>](#55 "One of the big advantages of the Separate Properties is that it allows you put information about the property in the property. Such information might include who determined the property, when it was determined, and the like. The Observation pattern in \[Fowler AP §3.5\] build upon this theme in some depth. Much of what I’ve described there in terms of observations is worth considering if you need separate properties. \(I see the observation pattern as a use of separate properties.\)")
+
+- [<span id="56">您可能想知道`分离属性`（模式）和限定关联（`UML`建模结构）之间的对比。 你也可以把合格的关联看作一种模式，一种联想模式。确实，我在\[Fowler AP §15.2\]中做了这个。我发现为设计创建模型考虑是有帮助的，因为它帮助我思考使用它们的权衡。当你将它们的模型比较清楚，如`分离属性`，这是特别有用的。当然，以模式开始的事情可以转化为建模结构，特别是如果使用`UML`构造型。历史映射模式\[FowlerAP§15.3\]就是一个很好的例子。我表示使用这种模式非常刻版。这是一个模式或建模？也许这是一个地板蜡和一个沙漠顶部。</span>](#56 "You might be wondering at the contrast between separate properties \(a pattern\) and qualified associations \(a UML modeling construct\). You can also think of qualified associations as a pattern, a pattern of association. Indeed I did do this in \[Fowler AP §15.2\]. I have found it helpful to think of modeling constructs as patterns, for it helps me think about the trade-offs in using them. This is particularly useful when you are comparing them to something that is more clearly a pattern, such as separate property. Of course things that begin as patterns can be turned into modeling constructs, particularly if you use UML stereotypes. The historic mapping pattern \[Fowler AP §15.3\] is a good example of that. I represent that using the «history» stereotype. Is it a pattern or a modeling construction? Maybe it’s a floor wax and a desert topping too.")
+
+---
+## [<span id="57">具有多值关联的动态属性</span>](#57 "Dynamic Properties with Multi-valued associations")
+
+- [<span id="58">我上面的例子集中讨论了`动态属性`中每个键都有一个单一值的情况。 但是，您也可以在`动态属性`中有多个事件的情况。与人相处时，你可能会考虑一个多值的友好属性。处理这个问题有两种方法，一种简单而不令人满意，另一种令人满意，但（太）复杂。</span>](#58 "My examples above have concentrated on cases where there is a single value for each key in the dynamic properties. But you can also have cases where there are multiple items in the dynamic properties. With Person you might consider a friends property which is multi-valued.There are two ways to deal with this, one that is simple and unsatisfying, another that is satisfying but (too) complex.")
+
+
+- [<span id="59">简单的方法就是说`动态属性`的值可以是一个集合。然后我们可以像使用相同接口的其他对象一样操作它（清单11）。这很好，很简单，因为我们不需要对基本的`动态属性`模式做任何事情（这里的例子是一个类型化的`动态属性`，但是它可以和所有的模式一起工作）。然而，这并不令人满意，因为它不是真的是我们想要处理多值属性的方式。如果朋友是一个固定的属性，我们需要一个接口，如清单12所示。我不喜欢在这些情况下暴露集合。通过这样做，人员班级在我们添加或移除元素时就失去了应对的能力。这也消除了我们改变我们正在使用的集合类型的能力。</span>](#59 "The simple approach is just to say that the value of a dynamic property can be a collection.We can then manipulate it like any other object with the same interface (Listing 11). This is nice and simple, since we don’t have to do anything to the basic dynamic property pattern.(The example here is with a typed dynamic property, but it will work with all of them.) It’s unsatisfying however because it is not really the way we would like to deal with multi-valued properties. If friends were a fixed property, we would want an interface along the lines of Listing 12. I don’t like exposing the vector in these cases. By doing so the person class loses the ability to react when we add or remove elements. It also removes our ability to change the type of collection we are using.")
 
 ```java
 Person aPerson = new Person();
@@ -261,14 +264,14 @@ Person kent = new Person(“Kent”);
 martin.getValueOf(“Friends”).addElement(“Kent”);
 Enumeration friends = martin.getValueOf(“Friends”).elements();
 ```
-> 列举11, 在类型化动态属性中使用集合值
+#### 列举11, 在类型化动态属性中使用集合值
 ```java
 class Person {
-public Enumeration getFriends();
-public void addFriend(Person arg);
-public void removeFriend(Person arg);
+    public Enumeration getFriends();
+    public void addFriend(Person arg);
+    public void removeFriend(Person arg);
 ```
-> 列举12, 一个固定的多值财产的运作
+#### 列举12, 一个固定的多值属性的运作
 
 - 那么当我们有动态属性的时候，我们可以按照清单12的方式获得一个接口吗？那么，如果我们努力工作，就可以如图7所示。但这是一个复杂的模型。同一些聪明的编码，我们可以隐藏接口之后的复杂性（清单13和13）清单14），并且使用起来相当方便（清单15）。但客户仍然需要知道哪些属性是单值的，哪些属性是多值的，所有的检查正确的使用只能在运行时发生。 所有这些复杂性是痛苦的 - 更加痛苦比使用固定的属性。我会非常不愿走这么远。
 
