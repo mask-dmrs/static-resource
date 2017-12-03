@@ -21,8 +21,8 @@ fowler@acm.org
  &nbsp;  |[<span id="10">提供使用某种类型的实例进行参数化的属性。要声明属性，请创建该类型的新实例并指定该属性的值类型.</span>](#10 "Provide an attribute parameterized with a instance of some type. To declare a property create a new instance of the type and specify the value type of the property.")|[类型动态属性](#类型动态属性 "Typed Dynamic Property")|9
 [<span id="11">你如何表示一个对象的属性，并允许对象的属性也具有属性</span>](#11 "How do you represent a fact about an object, and allow facts to be recorded about that fact")|[<span id="11">为每个属性创建一个单独的对象。 关于那个属性的详细可以作为这个对象的的属性.<span>](#11 "Create a separate object for each property. Facts about that property can then be made properties of that object.")|[分离属性](#分离属性 "Separate Properties")	|10
 [<span id="12">你如何表示两个对象之间的关系（如何表示多个值动态属性？）</span>](#12 "How do you represent a relationship between two objects?(How do you represent multi-valued dynamic properties?)")|[<span id="12">为两个对象之间的每个链接创建一个关系对象。 给关系对象一个类型对象来表示关系的含义。 （类型对象是多值属性的名称。）<span>](#12 "Create a relationship object for each link between the two objects. Give the relationship object a type object to indicate the meaning of the relationship. (The type object is the name of the multi-valued property.)")|[类型关系](#类型关系 "Typed Relationship")| 14
-当你使用动态属性时，你如何强制某些类型的对象具有某些属性？ |创建知识级别以包含哪些类型的对象使用哪些类型的属性的规则 |动态财产知识水平| 16
-你如何给一个对象一个属性而不改变它的接口？|使另一个对象负责知道属性| 外在性质| 18
+[<span id="13">当你使用动态属性时，你如何强制某些类型的对象具有某些属性？</span>](#13 "How do you enforce that certain kinds of objects have certain properties when you use dynamic properties?") |[<span id="13">创建知识级别以包含哪些类型的对象使用哪些类型的属性的规则](#13 "Create a knowledge level to contain the rules of what types of objects use which types of properties") |[动态属性知识水平](#动态属性知识水平 "Dynamic Property Knowledge Level")| 16
+[<span id="14">你如何给一个对象新增一个属性而不改变它的接口？</span>](#14 "How do you give an object a property without changing its interface?")|[使用另一个对象负责属性](#14  "Make another object responsible for knowing about the property")| [外在性质](#外在性质 "Extrinsic Property")| 18
 
 ---
 ## 什么是属性
