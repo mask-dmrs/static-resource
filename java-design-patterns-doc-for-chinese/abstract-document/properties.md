@@ -59,7 +59,7 @@ class Person {
     - [<span id="20">接口很清晰明确</span>](#20 "Clear and explicit interface")</br>
     - [<span id="20"><font color="red">只能在设计时添加属性</font></span>](#20 "Can only add properties at design time")</br>
 ---
-  
+
 - [<span id="21">您可能希望为属性的`构造函数`提供参数。通常，您要在`构造函数`中设置足够的属性，以便构建格式良好的类。</span>](#21 "You may wish to provide arguments to the constructor for properties. Typically you want to set enough properties in the constructor so that you construct a well-formed class.")
 
 - [<span id="22">不想直接修改的属性不应该有`修饰符`操作。如果您只希望从出生之日起计算，那么年龄属性可能就是这种情况。对于一个不可改变的`属性`也是如此：一个在类的生命周期中不会改变的`属性`。当你想使`属性`不可改变时，请记住考虑到人为错误。虽然出生日期对于现实世界中的人类来说是不可改变的`属性`，但是您可能会在输入到计算机系统时出现错误，从而使其变得可变。软件常常模拟我们所知道的世界，而不是世界本身。</span>](#22 "Properties that you don’t want to be modified directly should not have a modifier operation.This might be the case for the age property, if you only want that determined by calculation from the date of birth. It also would be the case for an immutable property: one that does not change for the lifetime of the class. When you think of making a property immutable, remember to take human error into account. While the date of birth is an immutable property for humans in the real world, you might make a mistake typing into a computer system, and thus make it mutable. Software often models what we know of the world, rather than the world itself.")
@@ -76,7 +76,7 @@ class Person {
    - [<span id="25"> 可以在运行时添加属性</span>](#25 "Can add properties at run time")
    - [<span id="25"><font color="red">接口不清晰</font></span>](#25 "Unclear interface")
 ---
-  
+
 - [<span id="26">`动态属性`有多种变化，每种变化都会在`灵活性`和`安全性`之间做出不同的选择。 最简单的方法是`灵活动态属性`。 这种模式的本质是为键值为简单值的人（通常是字符串）添加一个合格的关联（参见图2和示例2）。 如果您想为某人Kent添加休假地址，则只需使用清单3中的代码即可。您不需要重新编译人员类。 你甚至可以建立一个图形用户界面（`GUI`）或者文件读取器来添加属性，而不用重新编译客户端。</span>](#26 "There are several variations on dynamic properties, each of which make different trade-offs between flexibility and safety. The simplest approach is Flexible Dynamic Properties. The essence of this pattern is that you add a qualified association to the person whose key is a simple value, usually a string (see Figure 2 and Listing 2). If you want to add a vacation address to a person Kent, you just use the code in Listing 3. You don’t need to recompile the person class. You could even build a GUI or a file reader that would add properties without recompiling the client either.")
 
 ![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/5_1.png)
@@ -97,7 +97,7 @@ Address kentVactation = (Address) kent.getValueOf(“VacationAddress”)
 ---
  <h3 align = "center">灵活动态属性</h3>
   - [<span id="28">你如何代表一个对象的事实？</span>](#28 "How do you represent a fact about an object?")</br>
-  - [<span id="28">提供一个用字符串参数化的属性。只声明一个属性使用字符串。</span>](#28 "Provide an attribute parameterized with a string. To declare a property just use the string.") </br> 
+  - [<span id="28">提供一个用字符串参数化的属性。只声明一个属性使用字符串。</span>](#28 "Provide an attribute parameterized with a string. To declare a property just use the string.") </br>
 ---
 
 - [<span id="30">不仅是属性很难找到，它的依赖也是一个噩梦。随着固定属性的客户端代码有一个依赖于人类 - 一个依赖是难以跟踪。如果你改变属性的名字，编译器会让你知道，并告诉你需要改变什么代码才能解决问题。但灵活的动态属性创建一个依赖于任意一段代码。它可能是属于一个类的代码甚至不能被客户端看到。如果有人更改密钥字符串会发生什么？如果有人改变他们把键入字符串的对象的类型会发生？不仅仅是编译器没法帮助你，你甚至不知道从哪里开始查找变化。</span>](#30 "Not just is the property hard to find, it also creates a nightmare dependency. With fixed properties the client code has a dependency to the person class – a dependency that is easy to keep track of. If you change the name of the property the compiler will let you know, and tell you what code you need to change to fix things. But the Flexible Dynamic Property creates a dependency into some arbitrary piece of code. It could be code that belongs to a class that is not even visible to the client. What happens if someone changes the key string? What happens if someone changes the type of object they put into the key string? Not just can the compiler do nothing to help you, you don’t even know where to start looking for potential changes.")
@@ -109,9 +109,9 @@ Address kentVactation = (Address) kent.getValueOf(“VacationAddress”)
 ```java
 class Person {
     public Object getValueOf (String key) {
-        if (key = “vacationAddress”) 
+        if (key = “vacationAddress”)
             return calculatedVacationAddress();
-        if (key = “vacationPhone”) 
+        if (key = “vacationPhone”)
             return getVacationPhone();
         // else return stored value…
 ```
@@ -119,7 +119,7 @@ class Person {
 
 - [<span id="33">其他形式的动态属性可以帮助您解决其中一些问题，但不是全部。该`动态属性`的最大的缺点是：你失去了清晰的接口和所有的设计时间检查。`动态属性`的不同方法会让你额外写不同的检查方法。如果你需要`动态属性`，并且当然有确定的情况你这样做，那么你只需要放弃设计时间检查和明确的设计时间接口。唯一的问题是如何明确接口和有多少运行时检查。使用灵活的动态属性也会有同样的问题。</span>](#33 "Other forms of dynamic property help you solve some of these problems but not all. The essential disadvantage of a dynamic property is that you lose the clear interface and all designtime checking. Different approaches to dynamic properties give you different abilities to do run-time checking. If you need dynamic properties, and there are certainly situations when you do, then you just have to give up design time checking and a explicit design time interface. The only question is how explicit an interface and how much checking you can do at run time. With Flexible Dynamic Properties you don’t get any of either.")
 
-- [<span id="34">你经常在数据库中发现动态属性，因为改变它通常是一个痛苦数据库模式，特别是如果有大量的数据迁移。分布式的接口例如在`CORBA`中的组件也经常因为相似的原因而使用动态属性。那里是很多使用界面的远程客户，所以你不愿意改变它。在这两种情况下，编译时和运行时间之间的区别并不是设计时和生产之间的区别。</span>](#34 "You find dynamic properties often in databases because it is often a pain to change the database schema, especially if there would be a lot of data to migrate. Interfaces of distributed components, such as in CORBA, also often use dynamic properties for a similar reason. There are a lot of distant clients using the interface, so you are reluctant to change it. In both of these cases it is not so much a distinction between compile-time and run-time, as much as a distinction between design-time and production.") 
+- [<span id="34">你经常在数据库中发现动态属性，因为改变它通常是一个痛苦数据库模式，特别是如果有大量的数据迁移。分布式的接口例如在`CORBA`中的组件也经常因为相似的原因而使用动态属性。那里是很多使用界面的远程客户，所以你不愿意改变它。在这两种情况下，编译时和运行时间之间的区别并不是设计时和生产之间的区别。</span>](#34 "You find dynamic properties often in databases because it is often a pain to change the database schema, especially if there would be a lot of data to migrate. Interfaces of distributed components, such as in CORBA, also often use dynamic properties for a similar reason. There are a lot of distant clients using the interface, so you are reluctant to change it. In both of these cases it is not so much a distinction between compile-time and run-time, as much as a distinction between design-time and production.")
 
 - [<span id="35">如果你正在做的是通过`GUI`显示和更新信息，而代码永远不会对键进行固定的引用（即，你永远不会看到像清单3那样的代码），那么使用灵活`动态属性`就非常安全。这是因为你没有设置一个任意字符串作为一个关键的讨厌的依赖。 否则，你应该考虑`动态属性`的其他方法之一。</span>](#35 "If all you are doing is displaying and updating information via a GUI, and the code never makes a fixed reference to the keys (i.e. you never see code like Listing 3), then you are pretty safe with a Flexible Dynamic Property. This is because you have not set up a nasty dependency to some arbitrary string as a key. Otherwise you should consider one of the other approaches to dynamic properties.")
 
@@ -151,7 +151,7 @@ class ContactType {
 
 <h3 align = "center">定义动态属性</h3>
 - [<span id="39">你如何代表一个对象的事实？</span>](#39 "How do you represent a fact about an object?")
-- [<span id="39">提供用某种类型的实例参数化的属性。声明一个属性创建一个新类型的实例</span>](#39 "Provide an attribute parameterized with an instance of some type. To declare a property create a new instance of that type") 
+- [<span id="39">提供用某种类型的实例参数化的属性。声明一个属性创建一个新类型的实例</span>](#39 "Provide an attribute parameterized with an instance of some type. To declare a property create a new instance of that type")
 
 ---
 
@@ -286,7 +286,7 @@ class Person
     public void setValueOf(ContactType key, Object newValue);
     public void addValueTo(ContactType key, Object newValue);
     public void removeValueFrom(ContactType key, Object newValue);
-    
+
 class ContactType
     public Class getValueType();
     public boolean isMultiValued();
@@ -302,7 +302,7 @@ class Person
             throw IllegalArgumentException(“should use getValuesOf()”)
         //return the value
     }
-    
+
     public void addValueTo(ContactType key, Object newValue) {
         if (key.isSingleValued())
             throw IllegalArgumentException(“should use setValueOf”);
@@ -373,7 +373,7 @@ public Person {
 - [<span id="68">为了使用这个模式，我们给`Person`一个`Person`类型的`类型对象`。然后，我们可以说，人物类型与联系人类型的关联指示哪些人物拥有该人物类型可用的属性。 如果我们尝试使用或要求某人的属性，则可以使用人员类型来检查使用情况是否正确。</span>](#68 "To use the pattern we give the Person a type object of Person Type. We can then say that the person type’s association to contact type indicates which properties are available for people who have that person type. If we try to use, or ask for, a property on a person the person type can be used to check that the usage is correct.")
 
 ![image](https://static.zuul.top/java-design-patterns-doc-for-cn/abstract-document/16_1.png)
-#### 图11.动态财产知识水平
+#### 图11.动态属性知识水平
 
 ```java
 class Person {
